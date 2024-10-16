@@ -4,17 +4,32 @@ using UnityEngine;
 
 public abstract class DogBase : MonoBehaviour
 {
+    [SerializeField] protected int id;
+
+    [SerializeField] protected Dog_Graphic graphic;
+
     protected float dogFaith;
+    protected float dogSpeed;
     protected int barkStrength;
 
     protected float barkCoolDown;
     protected float barkCurrentCoolDown;
 
-    protected Sprite icon;
-
     public abstract void bark();
 
     public float GetFaith() {
         return dogFaith; 
+    }
+
+    public Dog_Graphic GetGraphic() { 
+        return graphic;
+    }
+
+    public float GetSpeed() {
+        return dogSpeed; 
+    }
+
+    public int GetId() { 
+        return id;
     }
 }
