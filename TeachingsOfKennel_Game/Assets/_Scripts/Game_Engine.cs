@@ -7,27 +7,12 @@ public enum State {freeRoam, fight}
 
 public class Game_Engine : MonoBehaviour
 {
-    public static Game_Engine instance { get; private set; }
     private State state;
+    public void StartDogFight(DogPack attacker, DogPack deffender){
 
-    private void Awake()
-    {
-        state = State.freeRoam; 
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    public void StartDogFight(DogPack attacker, DogPack deffender)
-    {
         state = State.fight; 
-        if (attacker.GetFaith() != 0 && deffender.GetFaith() != 0)
-        {
+
+        if (attacker.GetFaith() != 0 && deffender.GetFaith() != 0){
             attacker.TickBarks(deffender);
             StartCoroutine(fightTicker());
             deffender.TickBarks(attacker);
@@ -35,10 +20,10 @@ public class Game_Engine : MonoBehaviour
             StartDogFight(attacker, deffender);
         }
 
-        if (attacker.GetFaith() <= 0)
-        {
+        if (attacker.GetFaith() <= 0){
             attacker.ConvertRandom(deffender);
         }
+
         else { deffender.ConvertRandom(attacker); }
     }
 

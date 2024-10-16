@@ -13,6 +13,7 @@ public abstract class DogBase : MonoBehaviour
     protected Sprite icon;
 
     public abstract void bark();
+
     public float GetFaith() {
         return dogFaith; 
     }
