@@ -6,17 +6,16 @@ public class DogPack : MonoBehaviour
 {
     protected List<DogBase> dogs = new List<DogBase>();
     protected float packFaith;
-    protected float packSpeed;
+    protected float packSpeed = 2;
 
     [SerializeField] protected List<Dog_Graphic> dog_Graphics = new List<Dog_Graphic>();
     [SerializeField] private Dog_Graphic_Handler graphic_Handler; 
 
     protected Vector3 flagPos;
 
-    public void AddDog(DogBase dog){
+    public void AddDog(DogBase dog, Dog_Graphic dog_Graphic){
         dogs.Add(dog);
-        Dog_Graphic graphic = Instantiate(dog.GetGraphic(), transform);
-        dog_Graphics.Add(graphic); 
+        dog_Graphics.Add(dog_Graphic); 
     }
 
     private void RemoveDog(DogBase dog){ 
@@ -34,7 +33,7 @@ public class DogPack : MonoBehaviour
         foreach (DogBase dog in dogs){
             int x = Random.Range(1, 101);
             if (x >= dog.GetFaith()) {
-                newPack.AddDog(dog);
+                //newPack.AddDog(dog);
                 RemoveDog(dog);
             }
         }
@@ -42,8 +41,7 @@ public class DogPack : MonoBehaviour
 
     protected void MoveFlag(Vector3 newFlagPos) {
         flagPos = newFlagPos;
-        Vector3 moveDirc = (flagPos - transform.position).normalized;
-        transform.position += moveDirc * 2 * Time.deltaTime;
+        MoveGraphics(); 
     }
 
     public void MoveGraphics()
