@@ -14,5 +14,7 @@ public class Player_DogPack : DogPack
             newFlagPos = mousePos;
             MoveFlag(newFlagPos);
         }
+
+        SetPos(); 
     }
 }

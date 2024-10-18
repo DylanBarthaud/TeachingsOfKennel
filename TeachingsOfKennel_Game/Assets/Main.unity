@@ -250,6 +250,50 @@ Transform:
   - {fileID: 645296244}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &476947054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 476947055}
+  - component: {fileID: 476947056}
+  m_Layer: 0
+  m_Name: GloabalEventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &476947055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476947054}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1536336739}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &476947056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476947054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e4ab8b85bfbfd54f974a4ef2350af97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,7 +461,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1390744623
+--- !u!1 &1193846626
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -425,29 +469,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1390744624}
+  - component: {fileID: 1193846627}
+  - component: {fileID: 1193846628}
   m_Layer: 0
-  m_Name: Player_Dog_Pack
-  m_TagString: Untagged
+  m_Name: EnemyDogPack
+  m_TagString: Enemy_Pack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1390744624
+--- !u!4 &1193846627
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1390744623}
+  m_GameObject: {fileID: 1193846626}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.38893056, y: -0.89863694, z: -0.48406023}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5398301, y: -0.6128484, z: 0.1135506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1648293649}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1193846628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193846626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2c6ccabe53a64c478433bef77542594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graphic_Handler: {fileID: 645296245}
+  pack_Tag: Enemy_Pack
 --- !u!1 &1435170585
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +568,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1597431299}
+  - {fileID: 476947055}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1597431298
@@ -557,7 +617,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   list:
   - {fileID: 732462096043124048, guid: 223ffaa7d2c10704b9a8498e962ad9e9, type: 3}
-  - {fileID: 3252845784257134745, guid: 0a9329e1a837dc8439eb11ec11673efd, type: 3}
 --- !u!1 &1648293648
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,6 +647,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1946842687}
+  - {fileID: 1193846627}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1648737566
@@ -620,6 +680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1946842688}
+  enemy: {fileID: 1193846628}
 --- !u!4 &1648737568
 Transform:
   m_ObjectHideFlags: 0
@@ -645,9 +706,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1946842687}
   - component: {fileID: 1946842688}
+  - component: {fileID: 1946842689}
   m_Layer: 0
-  m_Name: Flag
-  m_TagString: Untagged
+  m_Name: PlayerPack
+  m_TagString: Player_Pack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -679,9 +741,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8b9be94fff8ee49bb28c057f7e8203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dog_Graphics: []
   graphic_Handler: {fileID: 645296245}
+  pack_Tag: Player_Pack
   mainCamera: {fileID: 519420031}
+--- !u!58 &1946842689
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946842686}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -694,4 +791,3 @@ SceneRoots:
   - {fileID: 1648293649}
   - {fileID: 1162525828}
   - {fileID: 1536336739}
-  - {fileID: 1390744624}

@@ -7,7 +7,7 @@ public class Dog_Graphic_Handler : MonoBehaviour
 
     public void MoveAllDogGraphics(List<Dog_Graphic> dog_graphics, Vector3 vector, float speed)
     {
-        List<Vector3> targetPositions = GetPosListAround(vector, new float[] {0.25f, 1f, 1.5f}, new int[] { 5, 10, dog_graphics.Count });
+        List<Vector3> targetPositions = GetPosListAround(vector, new float[] {0.25f, 0.5f, 0.75f}, new int[] { 5, 10, dog_graphics.Count });
 
         int targetPositionIndex = 0;
         foreach (Dog_Graphic dog_Graphic in dog_graphics)

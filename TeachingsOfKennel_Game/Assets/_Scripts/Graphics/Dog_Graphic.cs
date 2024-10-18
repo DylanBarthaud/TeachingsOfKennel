@@ -22,4 +22,8 @@ public class Dog_Graphic : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, movePos, dogGraphicSpeed * Time.deltaTime);
     }
+
+    public Vector3 getPos(){
+        return transform.position;
+    }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DogBase : MonoBehaviour
+public abstract class DogBase : MonoBehaviour 
 {
     [SerializeField] protected int id;
 
@@ -10,12 +10,12 @@ public abstract class DogBase : MonoBehaviour
 
     protected float dogFaith;
     protected float dogSpeed;
-    protected int barkStrength;
+    protected int barkStrength = 10;
 
     protected float barkCoolDown;
     protected float barkCurrentCoolDown;
 
-    public abstract void bark();
+    public abstract void bark(DogPack target);
 
     public float GetFaith() {
         return dogFaith; 
@@ -33,3 +33,4 @@ public abstract class DogBase : MonoBehaviour
         return id;
     }
 }
+

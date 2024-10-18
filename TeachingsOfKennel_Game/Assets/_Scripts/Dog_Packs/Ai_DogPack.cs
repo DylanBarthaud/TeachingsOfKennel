@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Ai_DogPack : DogPack
 {
-    [SerializeField] private Game_Engine engine; 
 
-    private void OnTriggerEnter2D(Collider2D collision){
-        engine.StartDogFight(this, collision.GetComponent<DogPack>()); 
+    private void Update()
+    {
+        Collider2D collision = Physics2D.OverlapCircle(this.transform.position, 2);
+        if (collision != null)
+        {
+            GlobalEventSystem.instance.packDetection(collision.tag, this); 
+        }
+        SetPos(); 
     }
 }

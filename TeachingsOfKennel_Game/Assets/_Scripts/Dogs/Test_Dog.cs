@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Test_Dog : DogBase
 {
-    public override void bark()
+    public override void bark(DogPack target)
     {
-        print("Bark"); 
+        print("bark"); 
+        target.SetFaith(-barkStrength); 
     }
 }
