@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DogPack : MonoBehaviour
 {
-    protected List<DogBase> dogs = new List<DogBase>();
+    [SerializeField] protected List<DogBase> dogs = new List<DogBase>();
     protected float packFaith = 100;
-    protected float packSpeed = 2;
+    protected float packSpeed = 1;
 
     protected List<Dog_Graphic> dog_Graphics = new List<Dog_Graphic>();
     [SerializeField] private Dog_Graphic_Handler graphic_Handler;
@@ -21,13 +21,19 @@ public class DogPack : MonoBehaviour
 
     public void AddDog(DogBase dog){
         dogs.Add(dog);
-        dog.GetGraphic().tag = pack_Tag;
-        dog_Graphics.Add(dog.GetGraphic()); 
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, 0);
+        Dog_Graphic dog_Graphic = Instantiate(dog.GetGraphic(), pos, transform.rotation); 
+        dog_Graphic.tag = pack_Tag;
+        dog_Graphics.Add(dog_Graphic); 
     }
 
     private void RemoveDog(DogBase dog){ 
         dogs.Remove(dog);
         dog_Graphics.Remove(dog.GetGraphic());
+
+        if (dogs.Count >= 0) { 
+            gameObject.SetActive(false);
+        }
     }
 
     public void TickBarks(DogPack target){
@@ -38,7 +44,6 @@ public class DogPack : MonoBehaviour
 
     public void startBattle(string tag,DogPack attacker) {
         if (pack_Tag == tag){
-            print("start");
             Game_Engine.instance.StartDogFight(attacker, this);
         }
     }
@@ -49,20 +54,28 @@ public class DogPack : MonoBehaviour
             List<DogBase> tempDogList = new List<DogBase>();
             foreach (DogBase dog in dogs)   
             {
-                int x = Random.Range(1, 101);
+                int x = 1;
                 if (x >= dog.GetFaith())
                 {
+                    print(dog.GetFaith()); 
                     tempDogList.Add(dog);
                 }
             }
 
             foreach (DogBase dog in tempDogList)
             {
-                AddDog(dog); 
                 RemoveDog(dog);
+                newPack.ConvertRandom(dog); 
             }
         }
         else { gameObject.SetActive(false); }
+    }
+
+    private void ConvertRandom(DogBase dog)
+    {
+        dogs.Add(dog);
+        dog.GetGraphic().tag = pack_Tag;
+        dog_Graphics.Add(dog.GetGraphic()); 
     }
 
     protected void MoveFlag(Vector3 newFlagPos) {
@@ -89,7 +102,7 @@ public class DogPack : MonoBehaviour
     }
 
     public void SetFaith(float x){
-        packFaith = x;
+        packFaith += x;
     }
 
     private void SetMaxFaith() {

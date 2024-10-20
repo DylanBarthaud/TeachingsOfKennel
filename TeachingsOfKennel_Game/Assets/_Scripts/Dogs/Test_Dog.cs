@@ -6,7 +6,7 @@ public class Test_Dog : DogBase
 {
     public override void bark(DogPack target)
     {
-        print("bark"); 
-        target.SetFaith(-barkStrength); 
+        print(dogFaith); 
+        target.SetFaith(-barkStrength);
     }
 }

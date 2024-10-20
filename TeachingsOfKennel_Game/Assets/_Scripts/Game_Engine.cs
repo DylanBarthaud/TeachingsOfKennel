@@ -10,6 +10,7 @@ public class Game_Engine : MonoBehaviour
     public static Game_Engine instance;
     [SerializeField] private Player_DogPack player;
     [SerializeField] private Ai_DogPack enemy;
+    private State state;
 
     private void Awake()
     {
@@ -18,33 +19,36 @@ public class Game_Engine : MonoBehaviour
             instance = this;
         }
 
-
-        GameObject dog = GlobalDogList.instance.GetDog(1);
-        Dog_Graphic graphic = Instantiate(dog.gameObject.GetComponent<DogBase>().GetGraphic(), transform);
-        player.AddDog(dog.GetComponent<DogBase>());
-
-        GameObject dog2 = GlobalDogList.instance.GetDog(1);
-        Dog_Graphic graphic2 = Instantiate(dog2.gameObject.GetComponent<DogBase>().GetGraphic(), transform);
-        player.AddDog(dog2.GetComponent<DogBase>());
-
-        GameObject dog3 = GlobalDogList.instance.GetDog(1);
-        Dog_Graphic graphic3 = Instantiate(dog3.gameObject.GetComponent<DogBase>().GetGraphic(), transform);
-        player.AddDog(dog3.GetComponent<DogBase>());
-
-
-        GameObject enemy_dog = GlobalDogList.instance.GetDog(1);
-        Dog_Graphic enemy_Graph = Instantiate(enemy_dog.gameObject.GetComponent<DogBase>().GetGraphic(), transform);
-        enemy.AddDog(enemy_dog.GetComponent<DogBase>());
+        SpawnDogs(player, 5); 
+        SpawnDogs(enemy, 3);
 
     }
 
-    private State state;
+    public void SpawnDogs(DogPack targetPack, int numOfDogs)
+    {
+        for (int i = 0; i < numOfDogs; i++)
+        {
+            GameObject dog = GlobalDogList.instance.GetRandomDog();
+            targetPack.AddDog(dog.GetComponent<DogBase>());
+        }
+    }
+
+    public void SpawnDogs(DogPack targetPack, int[] dogIds)
+    {
+        for(int i = 0; i < dogIds.Length; i++)
+        {
+            GameObject dog = GlobalDogList.instance.GetDog(dogIds[i]); 
+            targetPack.AddDog(dog.GetComponent<DogBase>());
+        }
+    }
+
     public void StartDogFight(DogPack attacker, DogPack deffender){
         print("start battle");
         state = State.fight;
         print(attacker.GetFaith() + " " + deffender.GetFaith()); 
-        if (attacker.GetFaith() !>= 0 && deffender.GetFaith() !>= 0){
-            StartCoroutine(fightTicker(attacker, deffender)); 
+        if (attacker.GetFaith() > 0 && deffender.GetFaith() > 0){
+            StartCoroutine(fightTicker(attacker, deffender));
+            return; 
         }
 
         if (attacker.GetFaith() <= 0){
@@ -57,9 +61,14 @@ public class Game_Engine : MonoBehaviour
 
     private IEnumerator fightTicker(DogPack attacker, DogPack deffender) {
         attacker.TickBarks(deffender);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
         deffender.TickBarks(attacker);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         StartDogFight(attacker, deffender);
+    }
+
+    public State GetState()
+    {
+        return state;
     }
 }

@@ -8,7 +8,7 @@ public abstract class DogBase : MonoBehaviour
 
     [SerializeField] protected Dog_Graphic graphic;
 
-    protected float dogFaith;
+    protected float dogFaith = 12f; 
     protected float dogSpeed;
     protected int barkStrength = 10;
 

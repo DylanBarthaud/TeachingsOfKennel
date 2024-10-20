@@ -20,7 +20,8 @@ public class Dog_Graphic : MonoBehaviour
 
     private void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, movePos, dogGraphicSpeed * Time.deltaTime);
+        Vector3 newMovePos = new Vector3(movePos.x, movePos.y, 1);
+        transform.position = Vector3.MoveTowards(transform.position, newMovePos, dogGraphicSpeed * Time.deltaTime);
     }
 
     public Vector3 getPos(){

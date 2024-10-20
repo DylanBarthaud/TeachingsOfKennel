@@ -9,7 +9,6 @@ public class GlobalDogList : MonoBehaviour
     [SerializeField]
     private List<GameObject> list = new List<GameObject>();
 
-
     private void Awake()
     {
         if(instance == null)
