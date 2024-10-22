@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class DogBase : MonoBehaviour 
 {
-    [SerializeField] protected int id;
+    [SerializeField] protected int breedId;
+    protected int personalId; 
 
     [SerializeField] protected Dog_Graphic graphic;
 
@@ -30,7 +31,11 @@ public abstract class DogBase : MonoBehaviour
     }
 
     public int GetId() { 
-        return id;
+        return personalId;
+    }
+
+    public void SetId(int id){
+        personalId = id;
     }
 }
 

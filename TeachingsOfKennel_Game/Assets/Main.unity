@@ -505,6 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2c6ccabe53a64c478433bef77542594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dogs: []
   graphic_Handler: {fileID: 645296245}
   pack_Tag: Enemy_Pack
 --- !u!1 &1435170585
@@ -741,6 +742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8b9be94fff8ee49bb28c057f7e8203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dogs: []
   graphic_Handler: {fileID: 645296245}
   pack_Tag: Player_Pack
   mainCamera: {fileID: 519420031}

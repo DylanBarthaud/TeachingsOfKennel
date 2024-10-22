@@ -14,15 +14,15 @@ public class DogPack : MonoBehaviour
 
     protected Vector3 flagPos;
 
-    private void Start()
-    {
+    private void Start(){
         GlobalEventSystem.instance.onPackDetection += startBattle; 
     }
 
     public void AddDog(DogBase dog){
         dogs.Add(dog);
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y, 0);
-        Dog_Graphic dog_Graphic = Instantiate(dog.GetGraphic(), pos, transform.rotation); 
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, 1);
+        Dog_Graphic dog_Graphic = Instantiate(dog.GetGraphic(), pos, transform.rotation);
+        dog_Graphic.SetId(dog.GetId()); 
         dog_Graphic.tag = pack_Tag;
         dog_Graphics.Add(dog_Graphic); 
     }
@@ -49,33 +49,36 @@ public class DogPack : MonoBehaviour
     }
 
     public void ConvertRandom(DogPack newPack){
-        if (dogs.Count >= 0)
-        {
-            List<DogBase> tempDogList = new List<DogBase>();
-            foreach (DogBase dog in dogs)   
-            {
-                int x = 1;
-                if (x >= dog.GetFaith())
-                {
-                    print(dog.GetFaith()); 
-                    tempDogList.Add(dog);
-                }
-            }
+        if (dogs.Count < 0){
+            return; 
+        }
 
-            foreach (DogBase dog in tempDogList)
-            {
-                RemoveDog(dog);
-                newPack.ConvertRandom(dog); 
+        List<DogBase> tempDogList = new List<DogBase>();
+
+        foreach (DogBase dog in dogs){
+            int x = 60;
+            if (x >= dog.GetFaith()){
+                tempDogList.Add(dog);
             }
         }
-        else { gameObject.SetActive(false); }
+
+        print(tempDogList.Count);
+
+        for (int i = 0; i < tempDogList.Count; i++){
+            for (int j = 0; j < dog_Graphics.Count; j++){
+                print(tempDogList[i].GetId() + " " + dog_Graphics[j].GetId());
+                if (tempDogList[i].GetId() == dog_Graphics[j].GetId()){
+                    RemoveDog(tempDogList[i]);
+                    newPack.Convert(tempDogList[i], dog_Graphics[j]); 
+                }
+            }
+        }
     }
 
-    private void ConvertRandom(DogBase dog)
-    {
+    public void Convert(DogBase dog, Dog_Graphic graphic){
         dogs.Add(dog);
-        dog.GetGraphic().tag = pack_Tag;
-        dog_Graphics.Add(dog.GetGraphic()); 
+        graphic.tag = pack_Tag;
+        dog_Graphics.Add(graphic); 
     }
 
     protected void MoveFlag(Vector3 newFlagPos) {
@@ -83,16 +86,13 @@ public class DogPack : MonoBehaviour
         MoveGraphics(); 
     }
 
-    public void MoveGraphics()
-    {
+    public void MoveGraphics(){
         graphic_Handler.MoveAllDogGraphics(dog_Graphics, flagPos, packSpeed); 
     }
 
-    protected void AssignGraphics()
-    {
+    protected void AssignGraphics(){
         dog_Graphics = new List<Dog_Graphic>();
-        foreach (DogBase dog in dogs)
-        {
+        foreach (DogBase dog in dogs){
             dog_Graphics.Add(dog.GetGraphic());
         }
     }
@@ -121,8 +121,7 @@ public class DogPack : MonoBehaviour
         packSpeed = x / dogs.Count;
     }
 
-    public void SetPos()
-    {
+    public void SetPos(){
         transform.position = dog_Graphics[0].transform.position; 
     }
 }

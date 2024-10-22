@@ -5,12 +5,8 @@ using UnityEngine;
 public class Dog_Graphic : MonoBehaviour
 {
     Vector3 movePos;
-    float dogGraphicSpeed; 
-
-    public void SetSpeed(float speed)
-    {
-        dogGraphicSpeed = speed;
-    }
+    float dogGraphicSpeed;
+    [SerializeField]private int id; 
 
     public void MoveDogGraphic(Vector3 movePos, float speed)
     {
@@ -26,5 +22,13 @@ public class Dog_Graphic : MonoBehaviour
 
     public Vector3 getPos(){
         return transform.position;
+    }
+
+    public int GetId() { 
+        return id;
+    }
+
+    public void SetId(int id) { 
+        this.id = id;
     }
 }
