@@ -8,12 +8,15 @@ public enum State {freeRoam, fight}
 public class Game_Engine : MonoBehaviour
 {
     public static Game_Engine instance;
-    [SerializeField] private Player_DogPack player;
-    [SerializeField] private Ai_DogPack enemy;
+    [SerializeField] private DogList dogList;
     private State state;
 
-    private int dogIteration; 
+    private int dogIteration;
 
+    //Temp
+    [SerializeField] private Player_DogPack player;
+    [SerializeField] private Ai_DogPack enemy;
+    
     private void Awake()
     {
         if(instance == null)
@@ -24,15 +27,17 @@ public class Game_Engine : MonoBehaviour
         dogIteration = 0;
 
         SpawnDogs(player, 5); 
-        SpawnDogs(enemy, 3);
+        SpawnDogs(enemy, 1);
     }
+
+
 
     public void SpawnDogs(DogPack targetPack, int numOfDogs)
     {
         for (int i = 0; i < numOfDogs; i++)
         {
             dogIteration++;
-            GameObject dog = GlobalDogList.instance.GetRandomDog();
+            GameObject dog = dogList.GetRandomDog();
             dog.GetComponent<DogBase>().SetId(dogIteration);
             targetPack.AddDog(dog.GetComponent<DogBase>());
         }
@@ -43,7 +48,7 @@ public class Game_Engine : MonoBehaviour
         for(int i = 0; i < dogBreedIds.Length; i++)
         {
             dogIteration++;
-            GameObject dog = GlobalDogList.instance.GetDog(dogBreedIds[i]); 
+            GameObject dog = dogList.GetDog(dogBreedIds[i]); 
             targetPack.AddDog(dog.GetComponent<DogBase>());
         }
     }

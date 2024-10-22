@@ -56,17 +56,14 @@ public class DogPack : MonoBehaviour
         List<DogBase> tempDogList = new List<DogBase>();
 
         foreach (DogBase dog in dogs){
-            int x = 60;
-            if (x >= dog.GetFaith()){
-                tempDogList.Add(dog);
-            }
+            tempDogList.Add(dog); 
         }
 
         print(tempDogList.Count);
 
         for (int i = 0; i < tempDogList.Count; i++){
             for (int j = 0; j < dog_Graphics.Count; j++){
-                print(tempDogList[i].GetId() + " " + dog_Graphics[j].GetId());
+                //print(tempDogList[i].GetId() + " " + dog_Graphics[j].GetId());
                 if (tempDogList[i].GetId() == dog_Graphics[j].GetId()){
                     RemoveDog(tempDogList[i]);
                     newPack.Convert(tempDogList[i], dog_Graphics[j]); 
