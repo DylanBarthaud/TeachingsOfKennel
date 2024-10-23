@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dog_Graphic_Handler : MonoBehaviour
+public class Dog_Movement_Handler : MonoBehaviour
 {
 
-    public void MoveAllDogGraphics(List<Dog_Graphic> dog_graphics, Vector3 vector, float speed)
+    public void MoveAllDogGraphics(List<DogBase> dogs, Vector3 vector, float speed)
     {
-        List<Vector3> targetPositions = GetPosListAround(vector, new float[] {0.25f, 0.5f, 0.75f}, new int[] { 5, 10, dog_graphics.Count });
+        List<Vector3> targetPositions = GetPosListAround(vector, new float[] {0.25f, 0.5f, 0.75f, 1f}, new int[] { 5, 10, 15 , dogs.Count });
 
         int targetPositionIndex = 0;
-        foreach (Dog_Graphic dog_Graphic in dog_graphics)
+        foreach (DogBase dogBase in dogs)
         {
-            dog_Graphic.MoveDogGraphic(targetPositions[targetPositionIndex], speed);
+            dogBase.MoveDogGraphic(targetPositions[targetPositionIndex]);
             targetPositionIndex++;
         }
     }

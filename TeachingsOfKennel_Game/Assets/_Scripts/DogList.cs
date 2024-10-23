@@ -13,7 +13,7 @@ public class DogList : MonoBehaviour
         foreach(GameObject dogObject in list)
         {
             DogBase dog = dogObject.GetComponent<DogBase>();
-            if(dog.GetId() == id)
+            if(dog.GetBreedId() == id)
             {
                 return dogObject;
             }

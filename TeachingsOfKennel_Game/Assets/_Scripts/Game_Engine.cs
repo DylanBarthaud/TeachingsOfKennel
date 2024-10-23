@@ -8,10 +8,8 @@ public enum State {freeRoam, fight}
 public class Game_Engine : MonoBehaviour
 {
     public static Game_Engine instance;
-    [SerializeField] private DogList dogList;
+    private ISpawner packSpawner; 
     private State state;
-
-    private int dogIteration;
 
     //Temp
     [SerializeField] private Player_DogPack player;
@@ -24,70 +22,48 @@ public class Game_Engine : MonoBehaviour
             instance = this;
         }
 
-        dogIteration = 0;
-
-        SpawnDogs(player, 5); 
-        SpawnDogs(enemy, 1);
-    }
-
-
-
-    public void SpawnDogs(DogPack targetPack, int numOfDogs)
-    {
-        for (int i = 0; i < numOfDogs; i++)
-        {
-            dogIteration++;
-            GameObject dog = dogList.GetRandomDog();
-            dog.GetComponent<DogBase>().SetId(dogIteration);
-            targetPack.AddDog(dog.GetComponent<DogBase>());
-        }
-    }
-
-    public void SpawnDogs(DogPack targetPack, int[] dogBreedIds)
-    {
-        for(int i = 0; i < dogBreedIds.Length; i++)
-        {
-            dogIteration++;
-            GameObject dog = dogList.GetDog(dogBreedIds[i]); 
-            targetPack.AddDog(dog.GetComponent<DogBase>());
-        }
+        packSpawner = GameObject.Find("DogPackSpawner").GetComponent<ISpawner>();
+        packSpawner.SpawnObject(this.gameObject, 3);
+        packSpawner.SpawnObject(this.gameObject, 10);
+        packSpawner.SpawnObject(this.gameObject, 5);
     }
 
     public void StartDogFight(DogPack attacker, DogPack deffender){
-        print("start battle");
         state = State.fight;
 
         if (attacker.GetFaith() <= 0)
         {
-            print("attacker lost");
             attacker.ConvertRandom(deffender);
+            state = State.freeRoam;
             return;
         }
 
         else if (deffender.GetFaith() <= 0)
         { 
-            print("deffender lost");
             deffender.ConvertRandom(attacker);
+            state = State.freeRoam;
             return;
         }
 
-        print(attacker.GetFaith() + " " + deffender.GetFaith()); 
         if (attacker.GetFaith() > 0 && deffender.GetFaith() > 0){
             StartCoroutine(fightTicker(attacker, deffender));
         }
-
     }
 
     private IEnumerator fightTicker(DogPack attacker, DogPack deffender) {
         attacker.TickBarks(deffender);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1f);
         deffender.TickBarks(attacker);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1f);
         StartDogFight(attacker, deffender);
     }
 
-    public State GetState()
+    public Vector2 GetNewPos(int minRange, int maxRange)
     {
+        return new Vector2(transform.position.x + Random.Range(minRange, maxRange), transform.position.y + Random.Range(minRange, maxRange));
+    }
+
+    public State GetState(){
         return state;
     }
 }

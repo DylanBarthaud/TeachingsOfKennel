@@ -12,13 +12,13 @@ public class GlobalEventSystem : MonoBehaviour
         instance = this;
     }
 
-    public event Action<String, DogPack> onPackDetection; 
+    public event Action<int, DogPack> onPackDetection; 
 
-    public void packDetection(String tag, DogPack attacker)
+    public void packDetection(int packId, DogPack attacker)
     {
         if(onPackDetection != null)
         {
-            onPackDetection(tag, attacker);
+            onPackDetection(packId, attacker);
         }
     }
 }

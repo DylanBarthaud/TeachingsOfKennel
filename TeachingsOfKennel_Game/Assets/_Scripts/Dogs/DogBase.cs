@@ -2,40 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DogBase : MonoBehaviour 
+public class DogBase : MonoBehaviour, IHasId
 {
     [SerializeField] protected int breedId;
-    protected int personalId; 
+    [SerializeField] protected int packId; 
 
-    [SerializeField] protected Dog_Graphic graphic;
+    protected float dogFaith = 10f; 
+    protected float dogSpeed = 1;
 
-    protected float dogFaith = 12f; 
-    protected float dogSpeed;
-    protected int barkStrength = 10;
-
+    protected int barkStrength = 1;
     protected float barkCoolDown;
     protected float barkCurrentCoolDown;
 
-    public abstract void bark(DogPack target);
+    Vector2 movePos;
 
-    public float GetFaith() {
-        return dogFaith; 
+    private void Awake(){
+        movePos = transform.position;
     }
 
-    public Dog_Graphic GetGraphic() { 
-        return graphic;
+    private void Update(){
+        Vector2 newMovePos = new Vector2(movePos.x, movePos.y);
+        transform.position = Vector2.MoveTowards(transform.position, newMovePos, dogSpeed * Time.deltaTime);
+    }
+
+    public void MoveDogGraphic(Vector2 movePos){
+        this.movePos = movePos;
+    }
+
+    public virtual void Bark(DogPack target) {
+        target.SetFaith(-barkStrength);
+    }
+
+    public float GetFaith() {
+        print(dogFaith); 
+        return dogFaith; 
     }
 
     public float GetSpeed() {
         return dogSpeed; 
     }
 
-    public int GetId() { 
-        return personalId;
+    public Vector2 GetPos(){
+        return transform.position;
     }
 
-    public void SetId(int id){
-        personalId = id;
+    public int GetBreedId(){
+        return breedId; 
+    }
+    public void SetId(int id)
+    {
+        packId = id;
+    }
+    public int GetId()
+    {
+        return packId;
     }
 }
 

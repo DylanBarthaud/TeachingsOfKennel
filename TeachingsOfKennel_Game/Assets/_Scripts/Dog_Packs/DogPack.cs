@@ -2,48 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogPack : MonoBehaviour
+public class DogPack : MonoBehaviour, IHasId
 {
     [SerializeField] protected List<DogBase> dogs = new List<DogBase>();
-    protected float packFaith = 100;
+    [SerializeField] protected float packFaith;
     protected float packSpeed = 1;
 
-    protected List<Dog_Graphic> dog_Graphics = new List<Dog_Graphic>();
-    [SerializeField] private Dog_Graphic_Handler graphic_Handler;
-    [SerializeField] private string pack_Tag; 
+    private Dog_Movement_Handler movement_Handler; 
+    [SerializeField] private int packId; 
 
     protected Vector3 flagPos;
 
-    private void Start(){
-        GlobalEventSystem.instance.onPackDetection += startBattle; 
+    private void Awake(){
+        movement_Handler = GameObject.Find("Dog_Movement_Handler").GetComponent<Dog_Movement_Handler>(); 
+
+        GlobalEventSystem.instance.onPackDetection += startBattle;
+    }
+
+    private void Start()
+    {
+        SetMaxFaith();
     }
 
     public void AddDog(DogBase dog){
+
         dogs.Add(dog);
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y, 1);
-        Dog_Graphic dog_Graphic = Instantiate(dog.GetGraphic(), pos, transform.rotation);
-        dog_Graphic.SetId(dog.GetId()); 
-        dog_Graphic.tag = pack_Tag;
-        dog_Graphics.Add(dog_Graphic); 
+        dog.SetId(packId);
     }
 
     private void RemoveDog(DogBase dog){ 
         dogs.Remove(dog);
-        dog_Graphics.Remove(dog.GetGraphic());
 
-        if (dogs.Count >= 0) { 
+        if (dogs.Count <= 0) { 
             gameObject.SetActive(false);
         }
     }
 
     public void TickBarks(DogPack target){
         foreach (DogBase dog in dogs) {
-            dog.bark(target); 
+            dog.Bark(target); 
         }
     }
 
-    public void startBattle(string tag,DogPack attacker) {
-        if (pack_Tag == tag){
+    public void startBattle(int packId,DogPack attacker) {
+        if (this.packId == packId){
             Game_Engine.instance.StartDogFight(attacker, this);
         }
     }
@@ -56,26 +58,13 @@ public class DogPack : MonoBehaviour
         List<DogBase> tempDogList = new List<DogBase>();
 
         foreach (DogBase dog in dogs){
-            tempDogList.Add(dog); 
+            tempDogList.Add(dog);
         }
-
-        print(tempDogList.Count);
 
         for (int i = 0; i < tempDogList.Count; i++){
-            for (int j = 0; j < dog_Graphics.Count; j++){
-                //print(tempDogList[i].GetId() + " " + dog_Graphics[j].GetId());
-                if (tempDogList[i].GetId() == dog_Graphics[j].GetId()){
-                    RemoveDog(tempDogList[i]);
-                    newPack.Convert(tempDogList[i], dog_Graphics[j]); 
-                }
-            }
+            RemoveDog(tempDogList[i]); 
+            newPack.AddDog(tempDogList[i]);
         }
-    }
-
-    public void Convert(DogBase dog, Dog_Graphic graphic){
-        dogs.Add(dog);
-        graphic.tag = pack_Tag;
-        dog_Graphics.Add(graphic); 
     }
 
     protected void MoveFlag(Vector3 newFlagPos) {
@@ -84,14 +73,7 @@ public class DogPack : MonoBehaviour
     }
 
     public void MoveGraphics(){
-        graphic_Handler.MoveAllDogGraphics(dog_Graphics, flagPos, packSpeed); 
-    }
-
-    protected void AssignGraphics(){
-        dog_Graphics = new List<Dog_Graphic>();
-        foreach (DogBase dog in dogs){
-            dog_Graphics.Add(dog.GetGraphic());
-        }
+        movement_Handler.MoveAllDogGraphics(dogs, flagPos, packSpeed); 
     }
 
     public float GetFaith() { 
@@ -104,7 +86,8 @@ public class DogPack : MonoBehaviour
 
     private void SetMaxFaith() {
         float x = 0;
-        foreach (DogBase dog in dogs) { 
+        foreach (DogBase dog in dogs) {
+            print(dog.GetFaith()); 
             x += dog.GetFaith();
         }
         packFaith = x;
@@ -119,6 +102,26 @@ public class DogPack : MonoBehaviour
     }
 
     public void SetPos(){
-        transform.position = dog_Graphics[0].transform.position; 
+        if (dogs.Count == 0) {
+            return; 
+        }
+        transform.position = dogs[0].transform.position; 
+    }
+
+    private bool idSet = false; 
+    public void SetId(int id)
+    {
+        if (!idSet)
+        {
+            packId = id;
+            idSet = true;
+        }
+
+        else { Debug.LogError("PackTag has already been set as: " + packId); }
+    }
+
+    public int GetId()
+    {
+        return packId;
     }
 }
