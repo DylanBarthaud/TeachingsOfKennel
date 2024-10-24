@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Player_DogPack : DogPack
 {
-    [SerializeField] private Camera mainCamera;
+    private Camera mainCamera;
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
 
     private void Update(){
 

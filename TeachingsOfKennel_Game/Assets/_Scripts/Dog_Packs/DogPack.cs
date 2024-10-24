@@ -28,14 +28,16 @@ public class DogPack : MonoBehaviour, IHasId
 
         dogs.Add(dog);
         dog.SetId(packId);
+        SetMaxFaith(); 
     }
 
     private void RemoveDog(DogBase dog){ 
         dogs.Remove(dog);
-
+            
         if (dogs.Count <= 0) { 
             gameObject.SetActive(false);
         }
+        SetMaxFaith();
     }
 
     public void TickBarks(DogPack target){
@@ -45,7 +47,7 @@ public class DogPack : MonoBehaviour, IHasId
     }
 
     public void startBattle(int packId,DogPack attacker) {
-        if (this.packId == packId){
+        if (this.packId == packId && packId < attacker.GetId()){
             Game_Engine.instance.StartDogFight(attacker, this);
         }
     }
@@ -58,7 +60,10 @@ public class DogPack : MonoBehaviour, IHasId
         List<DogBase> tempDogList = new List<DogBase>();
 
         foreach (DogBase dog in dogs){
-            tempDogList.Add(dog);
+            int x = Random.Range(1, 21);
+            if(x >= dog.GetFaith()){
+                tempDogList.Add(dog);
+            }
         }
 
         for (int i = 0; i < tempDogList.Count; i++){
@@ -87,7 +92,6 @@ public class DogPack : MonoBehaviour, IHasId
     private void SetMaxFaith() {
         float x = 0;
         foreach (DogBase dog in dogs) {
-            print(dog.GetFaith()); 
             x += dog.GetFaith();
         }
         packFaith = x;

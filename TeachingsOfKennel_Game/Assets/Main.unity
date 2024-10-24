@@ -864,6 +864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dogSpawner: {fileID: 1569124213}
   packTemplate: {fileID: 3065896074575101108, guid: 66eb9f0204025434997ad2dcff11a975, type: 3}
+  playerPackTemplate: {fileID: 2156909211386175915, guid: 370b0f79965b5dc4ca79a8473fccc44f, type: 3}
   minRange: -3
   maxRange: 3
 --- !u!1660057539 &9223372036854775807

@@ -23,7 +23,7 @@ public class Game_Engine : MonoBehaviour
         }
 
         packSpawner = GameObject.Find("DogPackSpawner").GetComponent<ISpawner>();
-        packSpawner.SpawnObject(this.gameObject, 3);
+        packSpawner.SpawnObject(this.gameObject, 30);
         packSpawner.SpawnObject(this.gameObject, 10);
         packSpawner.SpawnObject(this.gameObject, 5);
     }
