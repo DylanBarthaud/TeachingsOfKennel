@@ -2,55 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum State {freeRoam, fight} 
-
-
 public class Game_Engine : MonoBehaviour
 {
+    private Utilities utilities = new Utilities(); 
+
     public static Game_Engine instance;
     private ISpawner packSpawner; 
-    private State state;
 
     //Temp
     [SerializeField] private Player_DogPack player;
     [SerializeField] private Ai_DogPack enemy;
     
-    private void Awake()
-    {
-        if(instance == null)
-        {
+    private void Awake(){
+        if(instance == null){
             instance = this;
         }
 
         packSpawner = GameObject.Find("DogPackSpawner").GetComponent<ISpawner>();
-        packSpawner.SpawnObject(this.gameObject, 30);
-        packSpawner.SpawnObject(this.gameObject, 10);
-        packSpawner.SpawnObject(this.gameObject, 5);
+        packSpawner.SpawnObject(this.gameObject, 1, 5);
+        packSpawner.SpawnObject(this.gameObject, 10, 2, 8);
     }
 
     public void StartDogFight(DogPack attacker, DogPack deffender){
-        state = State.fight;
 
-        if (attacker.GetFaith() <= 0)
-        {
+        if (attacker.GetFaith() <= 0){
             attacker.ConvertRandom(deffender);
-            state = State.freeRoam;
+            StartCoroutine(FightCooldown(attacker, deffender)); 
             return;
         }
 
-        else if (deffender.GetFaith() <= 0)
-        { 
+        else if (deffender.GetFaith() <= 0){ 
             deffender.ConvertRandom(attacker);
-            state = State.freeRoam;
+            StartCoroutine(FightCooldown(attacker, deffender));
             return;
         }
 
         if (attacker.GetFaith() > 0 && deffender.GetFaith() > 0){
-            StartCoroutine(fightTicker(attacker, deffender));
+            StartCoroutine(FightTicker(attacker, deffender));
         }
     }
 
-    private IEnumerator fightTicker(DogPack attacker, DogPack deffender) {
+    private IEnumerator FightTicker(DogPack attacker, DogPack deffender) {
         attacker.TickBarks(deffender);
         yield return new WaitForSeconds(1f);
         deffender.TickBarks(attacker);
@@ -58,12 +50,11 @@ public class Game_Engine : MonoBehaviour
         StartDogFight(attacker, deffender);
     }
 
-    public Vector2 GetNewPos(int minRange, int maxRange)
-    {
-        return new Vector2(transform.position.x + Random.Range(minRange, maxRange), transform.position.y + Random.Range(minRange, maxRange));
-    }
-
-    public State GetState(){
-        return state;
+    private IEnumerator FightCooldown(DogPack attacker, DogPack deffender) {
+        attacker.SetState(State.cooldown);
+        deffender.SetState(State.cooldown);
+        yield return new WaitForSeconds(10f);
+        attacker.SetState(State.freeRoam);
+        deffender.SetState(State.freeRoam);
     }
 }

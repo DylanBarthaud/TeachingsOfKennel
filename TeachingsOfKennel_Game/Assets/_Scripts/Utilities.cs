@@ -2,22 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dog_Movement_Handler : MonoBehaviour
+public class Utilities  
 {
-
-    public void MoveAllDogGraphics(List<DogBase> dogs, Vector3 vector, float speed)
+    public Vector2 GetNewPos(Vector2 range)
     {
-        List<Vector3> targetPositions = GetPosListAround(vector, new float[] {0.25f, 0.5f, 0.75f, 1f}, new int[] { 5, 10, 15 , dogs.Count - 31 });
-
-        int targetPositionIndex = 0;
-        foreach (DogBase dogBase in dogs)
-        {
-            dogBase.MoveDogGraphic(targetPositions[targetPositionIndex]);
-            targetPositionIndex++;
-        }
+        return new Vector2(0 + Random.Range(range.x, range.y), 0 + Random.Range(range.x, range.y));
     }
 
-    private List<Vector3> GetPosListAround(Vector3 startPos, float[] ringDistanceArray, int[] posCountArray)
+    public Vector2 GetNewPos(Vector2 range, Vector2 exclusionZone, Vector2 startPos)
+    {
+        return new Vector2(startPos.x + Random.Range(range.x, range.y), startPos.y + Random.Range(range.x, range.y));
+    }
+
+    public List<Vector3> GetPosListAround(Vector3 startPos, float[] ringDistanceArray, int[] posCountArray)
     {
         List<Vector3> result = new List<Vector3>();
         result.Add(startPos);
@@ -28,7 +25,7 @@ public class Dog_Movement_Handler : MonoBehaviour
         return result;
     }
 
-    private List<Vector3> GetPosListAround(Vector3 startPos, float distance, int posCount)
+    public List<Vector3> GetPosListAround(Vector3 startPos, float distance, int posCount)
     {
         List<Vector3> result = new List<Vector3>();
         for (int i = 0; i < posCount; i++)

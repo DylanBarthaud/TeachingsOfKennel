@@ -1,22 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; 
+public enum State { freeRoam, fight, cooldown }
 
 public class DogPack : MonoBehaviour, IHasId
 {
+    protected Utilities utilities = new Utilities(); 
+
     [SerializeField] protected List<DogBase> dogs = new List<DogBase>();
     [SerializeField] protected float packFaith;
+    [SerializeField] protected Slider faithSlider; 
     protected float packSpeed = 1;
-
-    private Dog_Movement_Handler movement_Handler; 
+    [SerializeField] private State state;
     [SerializeField] private int packId; 
 
     protected Vector3 flagPos;
 
     private void Awake(){
-        movement_Handler = GameObject.Find("Dog_Movement_Handler").GetComponent<Dog_Movement_Handler>(); 
-
         GlobalEventSystem.instance.onPackDetection += startBattle;
+
+        state = State.freeRoam;
     }
 
     private void Start()
@@ -49,6 +53,8 @@ public class DogPack : MonoBehaviour, IHasId
     public void startBattle(int packId,DogPack attacker) {
         if (this.packId == packId && packId < attacker.GetId()){
             Game_Engine.instance.StartDogFight(attacker, this);
+            attacker.SetState(State.fight);
+            SetState(State.fight);
         }
     }
 
@@ -57,11 +63,12 @@ public class DogPack : MonoBehaviour, IHasId
             return; 
         }
 
+        SetMaxFaith();
         List<DogBase> tempDogList = new List<DogBase>();
 
         foreach (DogBase dog in dogs){
             int x = Random.Range(1, 21);
-            if(x >= dog.GetFaith()){
+            if(x >= dog.GetFaith() || dogs.Count <= 1){
                 tempDogList.Add(dog);
             }
         }
@@ -72,21 +79,35 @@ public class DogPack : MonoBehaviour, IHasId
         }
     }
 
-    protected void MoveFlag(Vector3 newFlagPos) {
-        flagPos = newFlagPos;
+    protected void MoveFlag(Vector2 newFlagPos) {
+        if (state == State.fight) {
+            flagPos =  transform.position;
+        }
+        else{
+            flagPos = newFlagPos;
+        }
         MoveGraphics(); 
     }
 
     public void MoveGraphics(){
-        movement_Handler.MoveAllDogGraphics(dogs, flagPos, packSpeed); 
+        MoveAllDogGraphics(); 
     }
 
-    public float GetFaith() { 
-        return packFaith;
+    public void MoveAllDogGraphics()
+    {
+        List<Vector3> targetPositions = utilities.GetPosListAround(flagPos, new float[] { 0.25f, 0.5f, 0.75f, 1f }, new int[] { 5, 10, 15, dogs.Count - 31 });
+
+        int targetPositionIndex = 0;
+        foreach (DogBase dogBase in dogs)
+        {
+            dogBase.MoveDogGraphic(targetPositions[targetPositionIndex]);
+            targetPositionIndex++;
+        }
     }
 
     public void SetFaith(float x){
         packFaith += x;
+        faithSlider.value = packFaith;
     }
 
     private void SetMaxFaith() {
@@ -95,6 +116,8 @@ public class DogPack : MonoBehaviour, IHasId
             x += dog.GetFaith();
         }
         packFaith = x;
+        faithSlider.maxValue = packFaith;
+        faithSlider.value = packFaith;
     }
 
     private void SetSpeed() {
@@ -124,8 +147,23 @@ public class DogPack : MonoBehaviour, IHasId
         else { Debug.LogError("PackTag has already been set as: " + packId); }
     }
 
+    public void SetState(State newState)
+    {
+        state = newState;
+    }
+
     public int GetId()
     {
         return packId;
+    }
+
+    public float GetFaith()
+    {
+        return packFaith;
+    }
+
+    public State GetState()
+    {
+        return state;
     }
 }

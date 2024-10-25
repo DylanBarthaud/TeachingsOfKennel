@@ -33,8 +33,7 @@ public class DogBase : MonoBehaviour, IHasId
         target.SetFaith(-barkStrength);
     }
 
-    public float GetFaith() {
-        print(dogFaith); 
+    public float GetFaith() { 
         return dogFaith; 
     }
 
@@ -49,12 +48,12 @@ public class DogBase : MonoBehaviour, IHasId
     public int GetBreedId(){
         return breedId; 
     }
-    public void SetId(int id)
-    {
+
+    public void SetId(int id){
         packId = id;
     }
-    public int GetId()
-    {
+
+    public int GetId(){
         return packId;
     }
 }
