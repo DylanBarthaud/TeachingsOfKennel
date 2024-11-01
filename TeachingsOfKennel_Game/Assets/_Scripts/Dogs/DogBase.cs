@@ -5,14 +5,11 @@ using UnityEngine;
 public class DogBase : MonoBehaviour, IHasId
 {
     [SerializeField] protected int breedId;
-    [SerializeField] protected int packId; 
+    protected int packId; 
 
-    protected float dogFaith = 10f; 
-    protected float dogSpeed = 1;
-
-    protected int barkStrength = 1;
-    protected float barkCoolDown;
-    protected float barkCurrentCoolDown;
+    [SerializeField] protected float dogFaith; 
+    [SerializeField] protected float dogSpeed;
+    [SerializeField] protected int barkStrength;
 
     Vector2 movePos;
 
@@ -52,7 +49,7 @@ public class DogBase : MonoBehaviour, IHasId
     public void SetId(int id){
         packId = id;
     }
-
+   
     public int GetId(){
         return packId;
     }
