@@ -45,9 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869f572e325c35b438175b0055f3542d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dogName: Rotweiler
   breedId: 3
   dogFaith: 5
-  dogSpeed: 1
+  dogSpeed: 1.25
   barkStrength: 20
 --- !u!1 &4598848060748068015
 GameObject:

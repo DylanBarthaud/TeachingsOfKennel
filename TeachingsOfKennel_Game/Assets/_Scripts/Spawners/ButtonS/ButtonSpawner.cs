@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;  
+using UnityEngine.UI;
+using TMPro; 
 
 public class ButtonSpawner : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class ButtonSpawner : MonoBehaviour
         {
             GameObject buttonObj = Instantiate(buttonList.GetButtons(buttonId), container);
             Button button = buttonObj.GetComponent<Button>();
-            button.onClick.AddListener(() => caller.OnButtonClick());
+            button.onClick.AddListener(caller.OnButtonClick);
         }
     }
 
@@ -23,7 +24,7 @@ public class ButtonSpawner : MonoBehaviour
         {
             GameObject buttonObj = Instantiate(buttonList.GetButtons(buttonId), container);
             Button button = buttonObj.GetComponent<Button>();
-            button.onClick.AddListener(() => caller.OnButtonClick());
+            button.onClick.AddListener(caller.OnButtonClick);
             button.gameObject.GetComponent<MoveButtonToTarget>().SetTarget(targetTransform);
         }
     }
@@ -32,7 +33,8 @@ public class ButtonSpawner : MonoBehaviour
         for (int i = 0; i < amount; i++){
             GameObject buttonObj = Instantiate(buttonList.GetButtons(buttonId), container);
             Button button = buttonObj.GetComponent<Button>();
-            button.onClick.AddListener(() => caller[i - 1].OnButtonClick());
+            
+            button.onClick.AddListener(caller[i].OnButtonClick);
         }
     }
 

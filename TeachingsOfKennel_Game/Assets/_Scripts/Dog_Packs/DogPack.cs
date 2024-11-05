@@ -23,14 +23,10 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         GlobalEventSystem.instance.onPackDetection += startBattle;
         statButtons = GameObject.Find("StatButtonSpawn").GetComponent<DogStatButtons>();
         buttonSpawner = GameObject.Find("ButtonSpawner").GetComponent<ButtonSpawner>();
+        buttonSpawner.SpawnButton(this, 1, 0, GameObject.Find("Canvas").transform, this.gameObject);
 
         state = State.freeRoam;
-    }
-
-    private void Start(){
         SetMaxFaith();
-
-        buttonSpawner.SpawnButton(this, 1, 0, GameObject.Find("Canvas").transform, this.gameObject);
     }
 
     public void AddDog(DogBase dog){
@@ -107,10 +103,6 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         }
     }
 
-    public void OnButtonClick(){
-        SpawnDogStats();
-    }
-
     public void SpawnDogStats(){
         List<ISpawnsButtons> dogButtons = new List<ISpawnsButtons>();
         for (int i = 0; i < dogs.Count; i++) {
@@ -130,6 +122,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         foreach (DogBase dog in dogs){
             x += dog.GetFaith();
         }
+
         packFaith = x;
         faithSlider.maxValue = packFaith;
         faithSlider.value = packFaith;
@@ -140,6 +133,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         foreach (DogBase dog in dogs){ 
             x += dog.GetSpeed();
         }
+
         packSpeed = x / dogs.Count;
     }
 
@@ -147,6 +141,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         if (dogs.Count == 0){
             return; 
         }
+
         transform.position = dogs[0].transform.position; 
     }
 
@@ -175,5 +170,10 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 
     public State GetState(){
         return state;
+    }
+
+    public void OnButtonClick()
+    {
+        SpawnDogStats(); 
     }
 }

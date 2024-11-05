@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; 
 
 public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
 {
+    [SerializeField] protected string dogName; 
     [SerializeField] protected int breedId;
     protected int packId; 
 
@@ -54,9 +56,15 @@ public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         return packId;
     }
 
-    public void OnButtonClick()
-    {
-        print(breedId);
+    public string GetName(){
+        return name;
+    }
+
+    public void OnButtonClick(){
+        print("Name: " + name);
+        print("Faith: " + dogFaith);
+        print("Speed: " + dogSpeed);
+        print("Bark Strength: " + barkStrength);
     }
 }
 

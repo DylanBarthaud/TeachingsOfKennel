@@ -45,9 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98498399b360be149894e4359c374140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dogName: German Shepard
   breedId: 4
   dogFaith: 15
-  dogSpeed: 1.4
+  dogSpeed: 1.29
   barkStrength: 14
 --- !u!1 &5008692910128691907
 GameObject:

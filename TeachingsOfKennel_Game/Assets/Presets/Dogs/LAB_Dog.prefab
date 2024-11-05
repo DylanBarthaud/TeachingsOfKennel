@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a209fcb93cd0294dad21d01efb5a688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dogName: Labrador
   breedId: 1
   dogFaith: 20
   dogSpeed: 1.3
