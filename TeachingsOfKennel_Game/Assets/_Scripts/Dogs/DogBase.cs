@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogBase : MonoBehaviour, IHasId
+public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
 {
     [SerializeField] protected int breedId;
     protected int packId; 
@@ -52,6 +52,11 @@ public class DogBase : MonoBehaviour, IHasId
    
     public int GetId(){
         return packId;
+    }
+
+    public void OnButtonClick()
+    {
+        print(breedId);
     }
 }
 

@@ -7,7 +7,7 @@ public class Game_Engine : MonoBehaviour
     private Utilities utilities = new Utilities(); 
 
     public static Game_Engine instance;
-    private ISpawner packSpawner; 
+    private PackSpawner packSpawner; 
 
     //Temp
     [SerializeField] private Player_DogPack player;
@@ -18,9 +18,9 @@ public class Game_Engine : MonoBehaviour
             instance = this;
         }
 
-        packSpawner = GameObject.Find("DogPackSpawner").GetComponent<ISpawner>();
-        packSpawner.SpawnObject(this.gameObject, 1, 10);
-        packSpawner.SpawnObject(this.gameObject, 10, 2, 8);
+        packSpawner = GameObject.Find("DogPackSpawner").GetComponent<PackSpawner>();
+        packSpawner.SpawnObject(1, 10);
+        packSpawner.SpawnObject(10, 2, 8);
     }
 
     public void StartDogFight(DogPack attacker, DogPack deffender){

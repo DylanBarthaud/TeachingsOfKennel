@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI; 
 public enum State { freeRoam, fight, cooldown }
 
-public class DogPack : MonoBehaviour, IHasId
+public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 {
     protected Utilities utilities = new Utilities(); 
 
@@ -15,21 +15,25 @@ public class DogPack : MonoBehaviour, IHasId
     [SerializeField] private State state;
     [SerializeField] private int packId; 
 
+    protected DogStatButtons statButtons;
+    protected ButtonSpawner buttonSpawner;
     protected Vector3 flagPos;
 
     private void Awake(){
         GlobalEventSystem.instance.onPackDetection += startBattle;
+        statButtons = GameObject.Find("StatButtonSpawn").GetComponent<DogStatButtons>();
+        buttonSpawner = GameObject.Find("ButtonSpawner").GetComponent<ButtonSpawner>();
 
         state = State.freeRoam;
     }
 
-    private void Start()
-    {
+    private void Start(){
         SetMaxFaith();
+
+        buttonSpawner.SpawnButton(this, 1, 0, GameObject.Find("Canvas").transform, this.gameObject);
     }
 
     public void AddDog(DogBase dog){
-
         dogs.Add(dog);
         dog.SetId(packId);
         SetMaxFaith(); 
@@ -38,14 +42,14 @@ public class DogPack : MonoBehaviour, IHasId
     private void RemoveDog(DogBase dog){ 
         dogs.Remove(dog);
             
-        if (dogs.Count <= 0) { 
-            gameObject.SetActive(false);
+        if (dogs.Count <= 0){ 
+            Destroy(gameObject);
         }
         SetMaxFaith();
     }
 
     public void TickBarks(DogPack target){
-        foreach (DogBase dog in dogs) {
+        foreach (DogBase dog in dogs){
             dog.Bark(target); 
         }
     }
@@ -93,16 +97,27 @@ public class DogPack : MonoBehaviour, IHasId
         MoveAllDogGraphics(); 
     }
 
-    public void MoveAllDogGraphics()
-    {
+    public void MoveAllDogGraphics(){
         List<Vector3> targetPositions = utilities.GetPosListAround(flagPos, new float[] { 0.25f, 0.5f, 0.75f, 1f }, new int[] { 5, 10, 15, dogs.Count - 31 });
 
         int targetPositionIndex = 0;
-        foreach (DogBase dogBase in dogs)
-        {
+        foreach (DogBase dogBase in dogs){
             dogBase.MoveDogGraphic(targetPositions[targetPositionIndex]);
             targetPositionIndex++;
         }
+    }
+
+    public void OnButtonClick(){
+        SpawnDogStats();
+    }
+
+    public void SpawnDogStats(){
+        List<ISpawnsButtons> dogButtons = new List<ISpawnsButtons>();
+        for (int i = 0; i < dogs.Count; i++) {
+            dogButtons.Add(dogs[i].gameObject.GetComponent<ISpawnsButtons>());
+        }
+
+        statButtons.SpawnStatButtons(dogButtons); 
     }
 
     public void SetFaith(float x){
@@ -110,9 +125,9 @@ public class DogPack : MonoBehaviour, IHasId
         faithSlider.value = packFaith;
     }
 
-    private void SetMaxFaith() {
+    private void SetMaxFaith(){
         float x = 0;
-        foreach (DogBase dog in dogs) {
+        foreach (DogBase dog in dogs){
             x += dog.GetFaith();
         }
         packFaith = x;
@@ -120,16 +135,16 @@ public class DogPack : MonoBehaviour, IHasId
         faithSlider.value = packFaith;
     }
 
-    private void SetSpeed() {
+    private void SetSpeed(){
         float x = 0;
-        foreach (DogBase dog in dogs) { 
+        foreach (DogBase dog in dogs){ 
             x += dog.GetSpeed();
         }
         packSpeed = x / dogs.Count;
     }
 
     public void SetPos(){
-        if (dogs.Count == 0) {
+        if (dogs.Count == 0){
             return; 
         }
         transform.position = dogs[0].transform.position; 
@@ -138,8 +153,7 @@ public class DogPack : MonoBehaviour, IHasId
     private bool idSet = false; 
     public void SetId(int id)
     {
-        if (!idSet)
-        {
+        if (!idSet){
             packId = id;
             idSet = true;
         }
@@ -147,23 +161,19 @@ public class DogPack : MonoBehaviour, IHasId
         else { Debug.LogError("PackTag has already been set as: " + packId); }
     }
 
-    public void SetState(State newState)
-    {
+    public void SetState(State newState){
         state = newState;
     }
 
-    public int GetId()
-    {
+    public int GetId(){
         return packId;
     }
 
-    public float GetFaith()
-    {
+    public float GetFaith(){
         return packFaith;
     }
 
-    public State GetState()
-    {
+    public State GetState(){
         return state;
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PackSpawner : MonoBehaviour, ISpawner
+public class PackSpawner : MonoBehaviour
 {
     private Utilities utilities = new Utilities(); 
 
@@ -12,13 +12,14 @@ public class PackSpawner : MonoBehaviour, ISpawner
     [SerializeField] private float range; 
     private int numOfPacks = 0;
 
-    public void SpawnObject(GameObject caller, int numberToSpawn, int numberOfItems ){
+    //  SpawnObject (|Number of packs to spawn| |Number of dogs to spawn in pack|)
+    public void SpawnObject(int numberToSpawn, int numberOfItems ){
         DogPack newPack;
 
         if (numOfPacks == 0){
             newPack = SpawnPlayer();
             dogSpawner.GetTargetPack(newPack);
-            dogSpawner.SpawnObject(this.gameObject, 0, numberOfItems);
+            dogSpawner.SpawnObject(numberOfItems);
         }
         else{
             List<Vector3> targetSpawnPositions = utilities.GetPosListAround(transform.position, range, numberToSpawn);
@@ -27,59 +28,49 @@ public class PackSpawner : MonoBehaviour, ISpawner
                 newPack = SpawnPack(targetSpawnPositions[targetPosIndex]);
                 targetPosIndex++; 
                 dogSpawner.GetTargetPack(newPack);
-                dogSpawner.SpawnObject(this.gameObject, 0, numberOfItems);
+                dogSpawner.SpawnObject(numberOfItems);
             }
         }
-        
     }
 
-    public void SpawnObject(GameObject caller, int numberToSpawn, int[] listOfItemIds){
+    public void SpawnObject(int numberToSpawn, int[] listOfItemIds){
         DogPack newPack;
 
-        if (numOfPacks == 0)
-        {
+        if (numOfPacks == 0){
             newPack = SpawnPlayer();
             dogSpawner.GetTargetPack(newPack);
-            dogSpawner.SpawnObject(this.gameObject, 0, listOfItemIds);
+            dogSpawner.SpawnObject(listOfItemIds);
         }
-        else
-        {
+        else{
             List<Vector3> targetSpawnPositions = utilities.GetPosListAround(transform.position, range, numberToSpawn);
             int targetPosIndex = 0;
-            for (int i = 0; i < numberToSpawn; i++)
-            {
+            for (int i = 0; i < numberToSpawn; i++){
                 newPack = SpawnPack(targetSpawnPositions[targetPosIndex]);
                 targetPosIndex++;
                 dogSpawner.GetTargetPack(newPack);
-                dogSpawner.SpawnObject(this.gameObject, 0, listOfItemIds);
+                dogSpawner.SpawnObject(listOfItemIds);
             }
         }
-
     }
 
-    public void SpawnObject(GameObject caller, int numberToSpawn, int randX, int randY)
-    {
+    public void SpawnObject(int numberToSpawn, int randMin, int randMax){
         DogPack newPack;
 
-        if (numOfPacks == 0)
-        {
+        if (numOfPacks == 0){
             newPack = SpawnPlayer();
             dogSpawner.GetTargetPack(newPack);
-            dogSpawner.SpawnObject(this.gameObject, 0, Random.Range(randX, randY));
+            dogSpawner.SpawnObject(Random.Range(randMin, randMax));
         }
-        else
-        {
+        else{
             List<Vector3> targetSpawnPositions = utilities.GetPosListAround(transform.position, range, numberToSpawn);
             int targetPosIndex = 0;
-            for (int i = 0; i < numberToSpawn; i++)
-            {
+            for (int i = 0; i < numberToSpawn; i++){
                 newPack = SpawnPack(targetSpawnPositions[targetPosIndex]);
                 targetPosIndex++;
                 dogSpawner.GetTargetPack(newPack);
-                dogSpawner.SpawnObject(this.gameObject, 0, Random.Range(randX, randY));
+                dogSpawner.SpawnObject(Random.Range(randMin, randMax));
             }
         }
-
     }
 
     private DogPack SpawnPack(Vector3 pos){

@@ -2,29 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogSpawner : MonoBehaviour, ISpawner
+public class DogSpawner : MonoBehaviour
 {
     private DogPack targetPack;
-    [SerializeField] private DogList dogList; 
+    [SerializeField] private DogList dogList;
 
-    public void SpawnObject(GameObject caller, int numberToSpawn, int numberOfItems){
-        for (int i = 0; i < numberOfItems; i++){
+    //  SpawnObject (|Number of dogs to spawn|)
+    public void SpawnObject(int numberToSpawn){
+        for (int i = 0; i < numberToSpawn; i++){
             Vector3 pos = new Vector3(targetPack.transform.position.x, targetPack.transform.position.y, 0);
             GameObject dog = Instantiate(dogList.GetRandomDog(), pos, targetPack.transform.rotation);
             targetPack.AddDog(dog.GetComponent<DogBase>());
         }
     }
 
-    public void SpawnObject(GameObject caller, int numberToSpawn, int[] listOfItemIds){
-        for (int i = 0; i < listOfItemIds.Length; i++){
-            GameObject dog = dogList.GetDog(listOfItemIds[i]);
+    public void SpawnObject(int[] listOfSpawnIds){
+        for (int i = 0; i < listOfSpawnIds.Length; i++){
+            GameObject dog = dogList.GetDog(listOfSpawnIds[i]);
             targetPack.AddDog(dog.GetComponent<DogBase>());
         }
-    }
-
-    public void SpawnObject(GameObject caller, int numberToSpawn, int randX, int randY)
-    {
-        throw new System.NotImplementedException();
     }
 
     public void GetTargetPack(DogPack target){

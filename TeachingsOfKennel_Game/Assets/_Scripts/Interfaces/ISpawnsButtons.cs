@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public interface ISpawnsButtons
-{
-    public void OnButtonClick(Button button);
+public interface ISpawnsButtons{
+    public void OnButtonClick();
 }

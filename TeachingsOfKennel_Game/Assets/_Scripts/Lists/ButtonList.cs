@@ -6,8 +6,7 @@ public class ButtonList : MonoBehaviour
 {
     [SerializeField] private GameObject[] buttons; 
 
-    public GameObject GetButtons(int index)
-    {
+    public GameObject GetButtons(int index){
         return buttons[index];
     }
 }
