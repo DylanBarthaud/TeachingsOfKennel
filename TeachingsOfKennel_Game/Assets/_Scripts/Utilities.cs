@@ -16,7 +16,7 @@ public class Utilities
     }
 
     public List<Vector3> GetPosListAround(Vector3 startPos, float[] ringDistanceArray, int[] posCountArray)
-    {
+    {       
         List<Vector3> result = new List<Vector3>();
         result.Add(startPos);
         for (int i = 0; i < posCountArray.Length; i++)

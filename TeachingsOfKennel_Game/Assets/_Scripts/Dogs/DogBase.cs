@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine; 
 
 public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
 {
@@ -61,7 +60,7 @@ public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
     }
 
     public void OnButtonClick(){
-        print("Name: " + name);
+        print("Name: " + dogName);
         print("Faith: " + dogFaith);
         print("Speed: " + dogSpeed);
         print("Bark Strength: " + barkStrength);

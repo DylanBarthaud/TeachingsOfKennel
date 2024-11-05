@@ -8,10 +8,6 @@ public class Game_Engine : MonoBehaviour
 
     public static Game_Engine instance;
     private PackSpawner packSpawner; 
-
-    //Temp
-    [SerializeField] private Player_DogPack player;
-    [SerializeField] private Ai_DogPack enemy;
     
     private void Awake(){
         if(instance == null){
@@ -27,12 +23,16 @@ public class Game_Engine : MonoBehaviour
 
         if (attacker.GetFaith() <= 0){
             attacker.ConvertRandom(deffender);
+            attacker.SetMaxFaith();
+            deffender.SetMaxFaith(); 
             StartCoroutine(FightCooldown(attacker, deffender)); 
             return;
         }
 
         else if (deffender.GetFaith() <= 0){ 
             deffender.ConvertRandom(attacker);
+            attacker.SetMaxFaith();
+            deffender.SetMaxFaith();
             StartCoroutine(FightCooldown(attacker, deffender));
             return;
         }

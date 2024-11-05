@@ -63,7 +63,6 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
             return; 
         }
 
-        SetMaxFaith();
         List<DogBase> tempDogList = new List<DogBase>();
 
         foreach (DogBase dog in dogs){
@@ -86,14 +85,10 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         else{
             flagPos = newFlagPos;
         }
-        MoveGraphics(); 
+        MoveAllDogs(); 
     }
 
-    public void MoveGraphics(){
-        MoveAllDogGraphics(); 
-    }
-
-    public void MoveAllDogGraphics(){
+    public void MoveAllDogs(){
         List<Vector3> targetPositions = utilities.GetPosListAround(flagPos, new float[] { 0.25f, 0.5f, 0.75f, 1f }, new int[] { 5, 10, 15, dogs.Count - 31 });
 
         int targetPositionIndex = 0;
@@ -117,7 +112,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         faithSlider.value = packFaith;
     }
 
-    private void SetMaxFaith(){
+    public void SetMaxFaith(){
         float x = 0;
         foreach (DogBase dog in dogs){
             x += dog.GetFaith();
