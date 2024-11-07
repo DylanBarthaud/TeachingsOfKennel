@@ -25,7 +25,7 @@ public class ButtonSpawner : MonoBehaviour
             GameObject buttonObj = Instantiate(buttonList.GetButtons(buttonId), container);
             Button button = buttonObj.GetComponent<Button>();
             button.onClick.AddListener(caller.OnButtonClick);
-            button.gameObject.GetComponent<MoveButtonToTarget>().SetTarget(targetTransform);
+            //buttonObj.GetComponent<MoveButtonToTarget>().SetTarget(targetTransform);
         }
     }
 

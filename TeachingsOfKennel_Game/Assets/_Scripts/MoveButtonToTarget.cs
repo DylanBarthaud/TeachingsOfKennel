@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveButtonToTarget : MonoBehaviour
 {
-    private GameObject target;
+    private Transform target;
     private Camera mainCamera;
     private RectTransform buttonRectTransform;
 
@@ -13,13 +13,13 @@ public class MoveButtonToTarget : MonoBehaviour
         buttonRectTransform = GetComponent<RectTransform>();
     }
 
-    public void SetTarget(GameObject target){
+    public void SetTarget(Transform target){
         this.target = target;
     }
 
     private void Update(){
         if (this.target != null){
-            Vector3 screenPos = mainCamera.WorldToScreenPoint(target.transform.position);
+            Vector3 screenPos = mainCamera.WorldToScreenPoint(target.position);
             buttonRectTransform.position = screenPos;
         }
 

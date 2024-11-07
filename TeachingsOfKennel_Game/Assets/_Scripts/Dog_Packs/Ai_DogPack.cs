@@ -13,7 +13,7 @@ public class Ai_DogPack : DogPack
         Collider2D collision = Physics2D.OverlapCircle(this.transform.position, 2);
         if (collision != null && collision.gameObject.GetComponent<DogPack>().GetState() == State.freeRoam && GetState() == State.freeRoam)
         {
-            GlobalEventSystem.instance.packDetection(collision.gameObject.GetComponent<IHasId>().GetId(), this); 
+            GlobalEventSystem.instance.PackDetection(collision.gameObject.GetComponent<IHasId>().GetId(), this); 
         }
 
         SetPos(); 

@@ -7,6 +7,8 @@ public class Game_Engine : MonoBehaviour
     private Utilities utilities = new Utilities(); 
 
     public static Game_Engine instance;
+
+    [SerializeField] UiManager uiManager;
     private PackSpawner packSpawner; 
     
     private void Awake(){
@@ -14,6 +16,8 @@ public class Game_Engine : MonoBehaviour
             instance = this;
         }
 
+        GlobalEventSystem eventSystem = GlobalEventSystem.instance;
+             
         packSpawner = GameObject.Find("DogPackSpawner").GetComponent<PackSpawner>();
         packSpawner.SpawnObject(1, 10);
         packSpawner.SpawnObject(3, 2, 8);

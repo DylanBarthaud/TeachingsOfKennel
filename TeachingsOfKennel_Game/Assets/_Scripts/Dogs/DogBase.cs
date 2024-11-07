@@ -12,9 +12,18 @@ public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
     [SerializeField] protected float dogSpeed;
     [SerializeField] protected int barkStrength;
 
+    private ButtonDataStruct buttonData; 
+
     Vector2 movePos;
 
-    private void Awake(){
+    private void Awake() {
+        buttonData = new ButtonDataStruct() {
+            text = dogName,
+            sprite = null, 
+            eventParent = this, 
+            transformParent = null
+        };
+
         movePos = transform.position;
     }
 
@@ -57,6 +66,10 @@ public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
 
     public string GetName(){
         return name;
+    }
+
+    public ButtonDataStruct GetButtonData() { 
+        return buttonData;
     }
 
     public void OnButtonClick(){
