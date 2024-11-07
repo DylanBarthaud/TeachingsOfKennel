@@ -9,7 +9,7 @@ public class Game_Engine : MonoBehaviour
     public static Game_Engine instance;
 
     [SerializeField] UiManager uiManager;
-    private PackSpawner packSpawner; 
+    [SerializeField] PacksManager packsManager;
     
     private void Awake(){
         if(instance == null){
@@ -17,10 +17,8 @@ public class Game_Engine : MonoBehaviour
         }
 
         GlobalEventSystem eventSystem = GlobalEventSystem.instance;
-             
-        packSpawner = GameObject.Find("DogPackSpawner").GetComponent<PackSpawner>();
-        packSpawner.SpawnObject(1, 10);
-        packSpawner.SpawnObject(3, 2, 8);
+
+        packsManager.SpawnPack(packsManager.playerPackTemplate, 1, new int[] { 5 }, new Vector3(0, 0, 0)); 
     }
 
     public void StartDogFight(DogPack attacker, DogPack deffender){

@@ -15,4 +15,26 @@ public class SpawnGameObjects : MonoBehaviour
         }
         return gameObjects;
     }
+
+    public GameObject[] SpawnGameObject(GameObject gameObject, int amount, Vector3 Location, Quaternion rotation)
+    {
+        GameObject[] gameObjects = new GameObject[amount];
+
+        for (int i = 0; i < amount; i++)
+        {
+            gameObjects[i] = Instantiate(gameObject, Location, rotation);
+        }
+        return gameObjects;
+    }
+
+    public GameObject[] SpawnGameObject(GameObject gameObject, int amount, List<Vector3> Locations, Quaternion rotation)
+    {
+        GameObject[] gameObjects = new GameObject[amount];
+
+        for (int i = 0; i < amount; i++)
+        {
+            gameObjects[i] = Instantiate(gameObject, Locations[i], rotation);
+        }
+        return gameObjects;
+    }
 }

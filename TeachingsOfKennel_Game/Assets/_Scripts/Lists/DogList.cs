@@ -8,22 +8,17 @@ public class DogList : MonoBehaviour
     [SerializeField]
     private List<GameObject> list = new List<GameObject>();
 
-    public GameObject GetDog(int id)
-    {
-        foreach(GameObject dogObject in list)
-        {
+    public GameObject GetDog(int id){
+        foreach(GameObject dogObject in list){
             DogBase dog = dogObject.GetComponent<DogBase>();
-            if(dog.GetBreedId() == id)
-            {
+            if(dog.GetBreedId() == id){
                 return dogObject;
             }
         }
-
         return null;
     }
 
-    public GameObject GetRandomDog()
-    {
+    public GameObject GetRandomDog(){
         int r = Random.Range(0, list.Count);
         return list[r];
     }
