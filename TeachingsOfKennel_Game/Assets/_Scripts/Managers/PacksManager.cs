@@ -17,7 +17,7 @@ public class PacksManager : MonoBehaviour
     // At location given
     private int numOfPacks = 0; 
     public void SpawnPack(GameObject pack, int amount, int[] amountOfDogs, Vector3 startLocation){
-        List<Vector3> targetSpawnPositions = utilities.GetPosListAround(startLocation, 3, amount);
+        List<Vector3> targetSpawnPositions = utilities.GetPosListAround(startLocation, 1, amount);
         GameObject[] packObjs = spawner.SpawnGameObject(pack, amount, targetSpawnPositions, transform.rotation);
 
         int i = 0; 

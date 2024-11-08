@@ -57,7 +57,7 @@ public class UiManager : MonoBehaviour
     }
 
     // Removes all buttons from a given transform
-    public void RemoveButtons(Transform container){
+    public void ClearContainer(Transform container){
         foreach (Transform child in container){
             if (child.GetComponent<Button>() != null){
                 Destroy(child.gameObject);

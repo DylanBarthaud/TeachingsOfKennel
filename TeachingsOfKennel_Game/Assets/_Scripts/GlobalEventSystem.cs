@@ -11,14 +11,4 @@ public class GlobalEventSystem : MonoBehaviour
     {
         instance = this;
     }
-
-    public event Action<int, DogPack> onPackDetection;
-
-    public void PackDetection(int packId, DogPack attacker)
-    {
-        if(onPackDetection != null)
-        {
-            onPackDetection(packId, attacker);
-        }
-    }
 }

@@ -11,11 +11,17 @@ public class Ai_DogPack : DogPack
     private void Update()
     {
         Collider2D collision = Physics2D.OverlapCircle(this.transform.position, 2);
-        if (collision != null && collision.gameObject.GetComponent<DogPack>().GetState() == State.freeRoam && GetState() == State.freeRoam)
+        if (collision != null)
         {
-            GlobalEventSystem.instance.PackDetection(collision.gameObject.GetComponent<IHasId>().GetId(), this); 
+            DogPack detectedPack = collision.gameObject.GetComponent<DogPack>();
+            if (detectedPack.GetState() == State.freeRoam && GetState() == State.freeRoam && packId > detectedPack.GetId())
+            {
+                Game_Engine.instance.StartDogFight(this, detectedPack);
+                SetState(State.fight); 
+                detectedPack.SetState(State.fight);
+            }
         }
-
+        
         SetPos(); 
 
         if(timeSinceMoved <= 0)
@@ -23,9 +29,6 @@ public class Ai_DogPack : DogPack
             MoveFlag(utilities.GetNewPos(range)); 
             timeSinceMoved = 1;
         }
-
         timeSinceMoved -= Time.deltaTime;
     }
 }
-
-

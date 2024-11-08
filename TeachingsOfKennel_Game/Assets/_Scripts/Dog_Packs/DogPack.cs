@@ -9,34 +9,26 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     protected Utilities utilities = new Utilities();
     private ButtonDataStruct buttonData; 
 
-    [SerializeField] protected List<DogBase> dogs = new List<DogBase>();
-    [SerializeField] protected float packFaith;
+    protected List<DogBase> dogs = new List<DogBase>();
+    protected float packFaith;
     [SerializeField] protected Slider faithSlider; 
     protected float packSpeed = 1;
-    [SerializeField] private State state;
-    [SerializeField] private int packId;
+    private State state;
+    protected int packId;
 
     protected Vector3 flagPos;
 
-    private void Awake() {
-        GlobalEventSystem eventSystem = GlobalEventSystem.instance;
-
-        buttonData = new ButtonDataStruct() {
+    private void Awake(){
+        buttonData = new ButtonDataStruct(){
             text = null, 
             sprite = null,
             eventParent = this, 
             transformParent = gameObject.transform 
         };
 
-        eventSystem.onPackDetection += startBattle;
-
+        UiManager.instance.SpawnButtons(new List<ButtonDataStruct>() { buttonData }, 0, 1, GameObject.Find("Canvas").transform);
         state = State.freeRoam;
         SetMaxFaith();
-    }
-
-    private void Start()
-    {
-        UiManager.instance.SpawnButtons(new List<ButtonDataStruct>() { buttonData } , 0, 1, GameObject.Find("Canvas").transform);
     }
 
     public void AddDog(DogBase dog){
@@ -57,14 +49,6 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     public void TickBarks(DogPack target){
         foreach (DogBase dog in dogs){
             dog.Bark(target); 
-        }
-    }
-
-    public void startBattle(int packId,DogPack attacker) {
-        if (this.packId == packId && packId < attacker.GetId()){
-            Game_Engine.instance.StartDogFight(attacker, this);
-            attacker.SetState(State.fight);
-            SetState(State.fight);
         }
     }
 
@@ -117,7 +101,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         }
 
         Transform container = UiManager.instance.statContainer.transform;
-        UiManager.instance.RemoveButtons(container);
+        UiManager.instance.ClearContainer(container);
         UiManager.instance.SpawnButtons(dogButtons, 1, dogs.Count, container); 
     }
 
@@ -172,7 +156,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     public int GetId(){
         return packId;
     }
-
+     
     public float GetFaith(){
         return packFaith;
     }
