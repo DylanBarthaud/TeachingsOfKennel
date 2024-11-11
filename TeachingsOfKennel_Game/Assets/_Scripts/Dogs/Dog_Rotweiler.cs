@@ -4,19 +4,11 @@ using UnityEngine;
 
 public class Dog_Rotweiler : DogBase
 {
-    private int cd = 3;
-
-    public override void Bark(DogPack target)
+    public override IEnumerator Bark(DogPack dogPack, DogPack target)
     {
-        if(cd == 0)
-        {
-            cd = 3;
-            target.SetFaith(-barkStrength * 3);
-        }
-        else
-        {
-            cd--;
-            base.Bark(target);
-        }
+        yield return new WaitForSeconds(barkSpeed);
+        print(dogName + ": BARK");
+        target.SetFaith(-barkStrength);
+        dogPack.TickBarks(target);
     }
 }

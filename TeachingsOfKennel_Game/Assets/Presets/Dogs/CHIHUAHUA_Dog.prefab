@@ -134,3 +134,4 @@ MonoBehaviour:
   dogFaith: 10
   dogSpeed: 1.26
   barkStrength: 5
+  barkSpeed: 0.2

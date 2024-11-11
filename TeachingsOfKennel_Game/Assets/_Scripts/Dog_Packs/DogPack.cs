@@ -6,17 +6,24 @@ public enum State { freeRoam, fight, cooldown }
 
 public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 {
-    protected Utilities utilities = new Utilities();
-    private ButtonDataStruct buttonData; 
+    // This class handles an individual dog pack
+    // Stores list of dogs in pack
+    // Stores stats of dog pack
+    // Has functionality for modifying dog pack data
 
+    protected Utilities utilities = new Utilities();
     protected List<DogBase> dogs = new List<DogBase>();
+
+    [SerializeField] protected Slider faithSlider;
+    private ButtonDataStruct buttonData; 
+    
     protected float packFaith;
-    [SerializeField] protected Slider faithSlider; 
     protected float packSpeed = 1;
-    private State state;
     protected int packId;
 
     protected Vector3 flagPos;
+
+    private State state;
 
     private void Awake(){
         buttonData = new ButtonDataStruct(){
@@ -31,6 +38,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         SetMaxFaith();
     }
 
+    // For adding/removing dogs to/from pack
     public void AddDog(DogBase dog){
         dogs.Add(dog);
         dog.SetId(packId);
@@ -46,13 +54,41 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         SetMaxFaith();
     }
 
+    // Battle functionality               
+    //
+    // "TickBarks"
+    // Calls the "bark" function in a DogBase class
+    // tickCounter will cycle through all dogs in list then reset 
+    //
+    // "ConvertRandom"
+    // Randomly selects dogs from list
+    // Converts selected dogs to new, given, pack
+
+    private int tickCounter = 0; 
     public void TickBarks(DogPack target){
-        foreach (DogBase dog in dogs){
-            dog.Bark(target); 
+        if (tickCounter >= dogs.Count){  
+            tickCounter = 0;
+        }
+
+        SetState(State.fight);
+
+        if (GetFaith() <= 0){
+            ConvertRandom(target);
+            StartCoroutine(FightCoolDown()); 
+            return; 
+        }
+
+        else if (target.GetFaith() <= 0){
+            StartCoroutine(FightCoolDown());
+        }
+
+        else{
+            StartCoroutine(dogs[tickCounter].Bark(this, target));
+            tickCounter++;
         }
     }
 
-    public void ConvertRandom(DogPack newPack){
+    private void ConvertRandom(DogPack newPack){
         if (dogs.Count < 0){
             return; 
         }
@@ -72,6 +108,16 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         }
     }
 
+    private IEnumerator FightCoolDown(){
+        SetMaxFaith();
+        SetState(State.cooldown);
+        yield return new WaitForSeconds(5); 
+        SetState(State.freeRoam);
+    }
+
+    // Logic for moving pack
+    // "MoveFlag" sets target position for pack
+    // "MoveAllDogs" passes positions around target position for dogs to move towards
     protected void MoveFlag(Vector2 newFlagPos) {
         if (state == State.fight) {
             flagPos =  transform.position;
@@ -92,6 +138,8 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         }
     }
 
+    // When pack is clicked on 
+    // Spawn buttons pertaining to each dog in list
     public void OnButtonClick()
     {
         List<ButtonDataStruct> dogButtons = new List<ButtonDataStruct>();
@@ -105,6 +153,28 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         UiManager.instance.SpawnButtons(dogButtons, 1, dogs.Count, container); 
     }
 
+    // Getters
+    public int GetId()
+    {
+        return packId;
+    }
+
+    public float GetFaith()
+    {
+        return packFaith;
+    }
+
+    public State GetState()
+    {
+        return state;
+    }
+
+    public ButtonDataStruct GetButtonDataStruct()
+    {
+        return buttonData;
+    }
+
+    //Setters
     public void SetFaith(float x){
         packFaith += x;
         faithSlider.value = packFaith;
@@ -119,15 +189,6 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         packFaith = x;
         faithSlider.maxValue = packFaith;
         faithSlider.value = packFaith;
-    }
-
-    private void SetSpeed(){
-        float x = 0;
-        foreach (DogBase dog in dogs){ 
-            x += dog.GetSpeed();
-        }
-
-        packSpeed = x / dogs.Count;
     }
 
     public void SetPos(){
@@ -151,21 +212,5 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 
     public void SetState(State newState){
         state = newState;
-    }
-
-    public int GetId(){
-        return packId;
-    }
-     
-    public float GetFaith(){
-        return packFaith;
-    }
-
-    public State GetState(){
-        return state;
-    }
-
-    public ButtonDataStruct GetButtonDataStruct(){
-        return buttonData;
     }
 }

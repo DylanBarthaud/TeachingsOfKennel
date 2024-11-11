@@ -4,5 +4,11 @@ using UnityEngine;
 
 public class Dog_GermanShep : DogBase
 {
-
+    public override IEnumerator Bark(DogPack dogPack, DogPack target)
+    {
+        yield return new WaitForSeconds(barkSpeed);
+        print(dogName + ": BARK"); 
+        target.SetFaith(-barkStrength); 
+        dogPack.TickBarks(target);
+    }
 }

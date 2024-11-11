@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
 
-public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
+public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
 {
     [SerializeField] protected string dogName; 
     [SerializeField] protected int breedId;
-    protected int packId; 
-
     [SerializeField] protected float dogFaith; 
     [SerializeField] protected float dogSpeed;
     [SerializeField] protected int barkStrength;
+    [SerializeField] protected float barkSpeed;
+    protected int packId;
 
     private ButtonDataStruct buttonData; 
 
@@ -36,10 +36,19 @@ public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         this.movePos = movePos;
     }
 
-    public virtual void Bark(DogPack target) {
-        target.SetFaith(-barkStrength);
+    // Abstract functions
+    public abstract IEnumerator Bark(DogPack dogPack, DogPack target);
+
+    // Display dogs current stats 
+    public void OnButtonClick()
+    {
+        print("Name: " + dogName);
+        print("Faith: " + dogFaith);
+        print("Speed: " + dogSpeed);
+        print("Bark Strength: " + barkStrength);
     }
 
+    // Getters
     public float GetFaith() { 
         return dogFaith; 
     }
@@ -48,35 +57,22 @@ public class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         return dogSpeed; 
     }
 
-    public Vector2 GetPos(){
-        return transform.position;
-    }
-
     public int GetBreedId(){
         return breedId; 
-    }
-
-    public void SetId(int id){
-        packId = id;
     }
    
     public int GetId(){
         return packId;
     }
 
-    public string GetName(){
-        return name;
-    }
-
     public ButtonDataStruct GetButtonData() { 
         return buttonData;
     }
 
-    public void OnButtonClick(){
-        print("Name: " + dogName);
-        print("Faith: " + dogFaith);
-        print("Speed: " + dogSpeed);
-        print("Bark Strength: " + barkStrength);
+    //Setters
+    public void SetId(int id)
+    {
+        packId = id;
     }
 }
 

@@ -16,9 +16,8 @@ public class Ai_DogPack : DogPack
             DogPack detectedPack = collision.gameObject.GetComponent<DogPack>();
             if (detectedPack.GetState() == State.freeRoam && GetState() == State.freeRoam && packId > detectedPack.GetId())
             {
-                Game_Engine.instance.StartDogFight(this, detectedPack);
-                SetState(State.fight); 
-                detectedPack.SetState(State.fight);
+                TickBarks(detectedPack);
+                detectedPack.TickBarks(this); 
             }
         }
         

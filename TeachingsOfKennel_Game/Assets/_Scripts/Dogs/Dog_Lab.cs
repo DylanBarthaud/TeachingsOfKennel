@@ -4,22 +4,11 @@ using UnityEngine;
 
 public class Dog_Lab : DogBase
 {
-    private bool cd = false;
-
-    public override void Bark(DogPack target)
+    public override IEnumerator Bark(DogPack dogPack, DogPack target)
     {
-        if (cd){
-            cd = false;
-            dogFaith = dogFaith * 2; 
-        }
-        else
-        {
-            cd = true;
-            dogFaith = dogFaith / 2;
-        }
-
+        yield return new WaitForSeconds(barkSpeed);
+        print(dogName + ": BARK");
         target.SetFaith(-barkStrength);
+        dogPack.TickBarks(target);
     }
-
-
 }

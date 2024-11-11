@@ -50,6 +50,7 @@ MonoBehaviour:
   dogFaith: 15
   dogSpeed: 1.29
   barkStrength: 14
+  barkSpeed: 3
 --- !u!1 &5008692910128691907
 GameObject:
   m_ObjectHideFlags: 0

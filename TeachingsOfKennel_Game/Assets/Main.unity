@@ -1435,8 +1435,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1116285943}
-  - {fileID: 1966543118}
-  - {fileID: 1569124212}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1484308784
@@ -1772,7 +1770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5331822038356214635, guid: bdf8f476d0dc2304bbccf71a89f1efbd, type: 3}
       propertyPath: coolDown
-      value: 10
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 5331822038356214635, guid: bdf8f476d0dc2304bbccf71a89f1efbd, type: 3}
       propertyPath: spawnPoint
@@ -1792,7 +1790,7 @@ PrefabInstance:
       objectReference: {fileID: 1407022242}
     - target: {fileID: 5331822038356214635, guid: bdf8f476d0dc2304bbccf71a89f1efbd, type: 3}
       propertyPath: amountOfPacks
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5958345983778774432, guid: bdf8f476d0dc2304bbccf71a89f1efbd, type: 3}
       propertyPath: m_Name
@@ -1803,51 +1801,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bdf8f476d0dc2304bbccf71a89f1efbd, type: 3}
---- !u!1 &1569124211
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1569124212}
-  - component: {fileID: 1569124213}
-  m_Layer: 0
-  m_Name: DogSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1569124212
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569124211}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1459007840}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1569124213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569124211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb176ad2918a0534cbb2c0427cba529a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dogList: {fileID: 1597431300}
 --- !u!1 &1597431298
 GameObject:
   m_ObjectHideFlags: 0
@@ -2069,54 +2022,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726336167}
   m_CullTransparentMesh: 1
---- !u!1 &1966543117
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1966543118}
-  - component: {fileID: 1966543119}
-  m_Layer: 0
-  m_Name: DogPackSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1966543118
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1966543117}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1459007840}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1966543119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1966543117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 912f11c9c6a4c8f4bbcb80bb2b6f83ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dogSpawner: {fileID: 1569124213}
-  packTemplate: {fileID: 3065896074575101108, guid: 66eb9f0204025434997ad2dcff11a975, type: 3}
-  playerPackTemplate: {fileID: 2156909211386175915, guid: 370b0f79965b5dc4ca79a8473fccc44f, type: 3}
-  range: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
