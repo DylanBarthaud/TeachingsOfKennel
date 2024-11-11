@@ -51,6 +51,7 @@ MonoBehaviour:
   dogSpeed: 1.29
   barkStrength: 14
   barkSpeed: 3
+  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &5008692910128691907
 GameObject:
   m_ObjectHideFlags: 0

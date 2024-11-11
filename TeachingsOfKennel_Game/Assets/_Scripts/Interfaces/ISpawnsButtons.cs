@@ -3,5 +3,5 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface ISpawnsButtons{
-    public void OnButtonClick();
+    public void OnButtonClick(GameObject buttonObj);
 }

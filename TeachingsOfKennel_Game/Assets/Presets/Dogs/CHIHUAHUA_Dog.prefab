@@ -130,8 +130,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dogName: Chihuahua
+  description: Chihuahuas are small yappy dogs that bark fast. Luckily they aren't
+    very loud.
   breedId: 2
   dogFaith: 10
   dogSpeed: 1.26
   barkStrength: 5
   barkSpeed: 0.2
+  sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}

@@ -13,6 +13,9 @@ public class UiManager : MonoBehaviour
     [SerializeField] ButtonList buttonList;
 
     [SerializeField] public GameObject statContainer; 
+    [SerializeField] public GameObject packViewer;
+    [SerializeField] public GameObject dogStats;
+    [SerializeField] public GameObject packButtonContainer; 
 
     public static UiManager instance;
     private void Awake()
@@ -26,16 +29,17 @@ public class UiManager : MonoBehaviour
     // Spawns amount of buttons in location  
     // Sets all button data including name, text and OnClick event 
     // All Based on given inputs
-    public void SpawnButtons(List<ButtonDataStruct> buttonData, int buttonId, int amount, Transform transform){
+    public GameObject[] SpawnButtons(List<ButtonDataStruct> buttonData, int buttonId, int amount, Transform transform){
         GameObject[] buttonObjs = spawner.SpawnGameObject(buttonList.GetButtons(buttonId), amount, transform);
 
         int i = 0;
         foreach (GameObject buttonObj in buttonObjs) {
+            int index = i; 
             Button button = buttonObj.GetComponent<Button>();
             Image image = buttonObj.GetComponent<Image>();
 
             if (buttonData[i].eventParent != null){
-                button.onClick.AddListener(buttonData[i].eventParent.OnButtonClick);
+                button.onClick.AddListener(() => buttonData[index].eventParent.OnButtonClick(buttonObj));
             }
             else { Debug.LogWarning(buttonObj + i.ToString() + ": hasn't been set an event parent"); }
 
@@ -54,6 +58,8 @@ public class UiManager : MonoBehaviour
 
             i++;
         }
+
+        return buttonObjs;
     }
 
     // Removes all buttons from a given transform
@@ -63,5 +69,24 @@ public class UiManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+    }
+
+    // Activate/Deactivate given window
+    public void ActivateWindow(GameObject window){  
+        window.SetActive(true);
+    }
+    public void DeactivateWindow(GameObject window){  
+        window.SetActive(false);
+    }
+
+    // Handles the dog stat window
+    public void SetDogStatWindow(DogDataStruct dogData){
+        Transform dogstatTransform = dogStats.transform;
+        dogstatTransform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = dogData.icon;
+        dogstatTransform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = dogData.description;
+        dogstatTransform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Breed: " + dogData.breed;
+        dogstatTransform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Faith: " + dogData.faith;
+        dogstatTransform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "Bark Strength: " + dogData.barkStrength;
+        dogstatTransform.GetChild(5).GetComponent<TextMeshProUGUI>().text = "Bark Speed: " + dogData.barkSpeed;
     }
 }

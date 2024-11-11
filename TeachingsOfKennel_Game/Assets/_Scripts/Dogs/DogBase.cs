@@ -5,25 +5,41 @@ using UnityEngine;
 public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
 {
     [SerializeField] protected string dogName; 
+    [SerializeField] protected string description;
     [SerializeField] protected int breedId;
     [SerializeField] protected float dogFaith; 
     [SerializeField] protected float dogSpeed;
     [SerializeField] protected int barkStrength;
     [SerializeField] protected float barkSpeed;
+    [SerializeField] protected Sprite sprite; 
     protected int packId;
 
+    private UiManager uiManager;
+
     private ButtonDataStruct buttonData; 
+    private DogDataStruct dogData;
 
     Vector2 movePos;
 
     private void Awake() {
         buttonData = new ButtonDataStruct() {
             text = dogName,
-            sprite = null, 
-            eventParent = this, 
+            sprite = this.sprite,
+            eventParent = this,
             transformParent = null
         };
 
+        dogData = new DogDataStruct()
+        {
+            icon = sprite,
+            breed = dogName,
+            description = this.description,
+            faith = dogFaith,
+            barkStrength = this.barkStrength,
+            barkSpeed = this.barkSpeed, 
+        };
+
+        uiManager = UiManager.instance; 
         movePos = transform.position;
     }
 
@@ -36,16 +52,18 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         this.movePos = movePos;
     }
 
+    public IEnumerator StartBark(DogPack dogPack, DogPack target){
+        yield return new WaitForSeconds(barkSpeed);
+        Bark(dogPack, target);
+        dogPack.TickBarks(target);
+    }
     // Abstract functions
-    public abstract IEnumerator Bark(DogPack dogPack, DogPack target);
+    public abstract void Bark(DogPack dogPack, DogPack target);
 
     // Display dogs current stats 
-    public void OnButtonClick()
-    {
-        print("Name: " + dogName);
-        print("Faith: " + dogFaith);
-        print("Speed: " + dogSpeed);
-        print("Bark Strength: " + barkStrength);
+    public void OnButtonClick(GameObject buttonObj){
+        uiManager.SetDogStatWindow(dogData);
+        uiManager.ActivateWindow(uiManager.dogStats);
     }
 
     // Getters
@@ -63,6 +81,10 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
    
     public int GetId(){
         return packId;
+    }
+
+    public Sprite GetSprite(){
+        return sprite;
     }
 
     public ButtonDataStruct GetButtonData() { 

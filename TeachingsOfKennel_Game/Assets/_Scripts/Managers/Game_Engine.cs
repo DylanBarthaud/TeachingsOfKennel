@@ -18,6 +18,6 @@ public class Game_Engine : MonoBehaviour
 
         GlobalEventSystem eventSystem = GlobalEventSystem.instance;
 
-        packsManager.SpawnPack(packsManager.playerPackTemplate, 1, new int[] { 5 }, new Vector3(0, 0, 0)); 
+        packsManager.SpawnPack(packsManager.playerPackTemplate, 1, new int[] { 17 }, new Vector3(0, 0, 0)); 
     }
 }
