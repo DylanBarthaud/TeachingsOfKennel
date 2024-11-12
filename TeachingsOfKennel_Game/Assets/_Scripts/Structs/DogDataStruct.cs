@@ -8,6 +8,6 @@ public struct DogDataStruct
     public string breed; 
     public string description;
     public float faith;
-    public int barkStrength;
+    public float barkStrength;
     public float barkSpeed;
 }

@@ -130,11 +130,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dogName: Chihuahua
-  description: Chihuahuas are small yappy dogs that bark fast. Luckily they aren't
-    very loud.
+  description: Chihuahua's are known for their quick yapping. Dont be fooled by the
+    volume, Chihuahuas quickly become deadly in a pack. After a chihuahua attacks
+    they speed up the next dogs attack by 50% of the diffrence between the next dogs
+    and their attack speed. If the next dog is a chihuahua they will set the dogs
+    bark speed to 50% of the current dogs bark speed.
   breedId: 2
   dogFaith: 10
   dogSpeed: 1.26
   barkStrength: 5
-  barkSpeed: 0.2
+  barkSpeed: 2
   sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}

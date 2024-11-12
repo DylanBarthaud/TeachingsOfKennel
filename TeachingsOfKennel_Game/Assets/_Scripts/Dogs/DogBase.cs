@@ -9,7 +9,7 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
     [SerializeField] protected int breedId;
     [SerializeField] protected float dogFaith; 
     [SerializeField] protected float dogSpeed;
-    [SerializeField] protected int barkStrength;
+    [SerializeField] protected float barkStrength;
     [SerializeField] protected float barkSpeed;
     [SerializeField] protected Sprite sprite; 
     protected int packId;
@@ -75,6 +75,10 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         return dogSpeed; 
     }
 
+    public float GetBarkSpeed(){
+        return barkSpeed; 
+    }
+
     public int GetBreedId(){
         return breedId; 
     }
@@ -92,9 +96,21 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
     }
 
     //Setters
-    public void SetId(int id)
-    {
+    public void SetId(int id){
         packId = id;
+    }
+
+    public void SetBarkSpeed(float x)
+    {
+        if (x > 0.1f)
+        {
+            barkSpeed = x;
+        }
+        else { barkSpeed = 0.1f; }
+    }
+
+    public void AddToBarkSpeed(float x){
+        barkSpeed -= x; 
     }
 }
 

@@ -191,6 +191,10 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         return packFaith;
     }
 
+    public int GetDogindex(){
+        return tickCounter;
+    }
+
     public State GetState(){
         return state;
     }
