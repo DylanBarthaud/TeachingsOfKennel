@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; 
-public enum State { freeRoam, fight, cooldown }
+using UnityEngine.UI;
 
+public enum State { freeRoam, fight, cooldown }
 public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 {
     // This class handles an individual dog pack
@@ -19,7 +19,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     [SerializeField] protected Slider faithSlider;
     private ButtonDataStruct buttonData; 
     
-    protected float packFaith;
+    [SerializeField] protected float packFaith;
     protected float packSpeed = 1;
     protected int packId;
 
@@ -68,12 +68,14 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         dog.gameObject.SetActive(true);
         dog.transform.position = new Vector2(transform.position.x + 5, transform.position.y); 
         MoveAllDogs();
+        SetMaxFaith();
     }
 
     public void DeactivateDog(DogBase dog){
         activeDogs.Remove(dog);
         storedDogs.Add(dog);
         dog.gameObject.SetActive(false);
+        SetMaxFaith();
     }
 
     public void SwapDogs(int dog1, int dog2, List<DogBase> list){
@@ -95,6 +97,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     public void TickBarks(DogPack target){
         if (tickCounter >= activeDogs.Count){  
             tickCounter = 0;
+            ResetDogStats();
         }
 
         SetState(State.fight);
@@ -102,17 +105,25 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         if (GetFaith() <= 0){
             ConvertRandom(target);
             StartCoroutine(FightCoolDown());
+            ResetDogStats();
             tickCounter = 0;
         }
 
         else if (target.GetFaith() <= 0){
             StartCoroutine(FightCoolDown());
+            ResetDogStats();
             tickCounter = 0;
         }
 
         else{
             StartCoroutine(activeDogs[tickCounter].StartBark(this, target));
             tickCounter++;
+        }
+    }
+
+    private void ResetDogStats(){
+        foreach (DogBase dog in activeDogs) {
+            dog.ResetStatsToBase(); 
         }
     }
 
@@ -125,7 +136,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 
         foreach (DogBase dog in activeDogs){
             int x = Random.Range(1, 21);
-            if(x >= dog.GetFaith() || activeDogs.Count <= 1){
+            if(x >= dog.GetBaseFaith() || activeDogs.Count <= 1){
                 tempDogList.Add(dog);
             }
         }
@@ -220,7 +231,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     public void SetMaxFaith(){
         float x = 0;
         foreach (DogBase dog in activeDogs){
-            x += dog.GetFaith();
+            x += dog.GetBaseFaith();
         }
 
         packFaith = x;

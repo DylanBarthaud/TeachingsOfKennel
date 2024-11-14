@@ -45,13 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869f572e325c35b438175b0055f3542d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dogName: Rotweiler
   breedId: 3
-  dogFaith: 5
-  dogSpeed: 1.25
-  barkStrength: 20
-  barkSpeed: 2
-  sprite: {fileID: 21300000, guid: 9ea72647c24be493ba6f15a9cd2a24ae, type: 3}
+  dogName: Rotweiler
+  description: 'Rotweilers bark deals 10% of the enemy packs max faith. '
+  sprite: {fileID: 21300000, guid: 9c6865f5945fa6d488bc420c4f2aeef5, type: 3}
+  baseDogFaith: 10
+  baseDogSpeed: 1
+  baseBarkStrength: 20
+  baseBarkSpeed: 1.5
 --- !u!1 &4598848060748068015
 GameObject:
   m_ObjectHideFlags: 0

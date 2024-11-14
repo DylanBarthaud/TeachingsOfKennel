@@ -6,6 +6,7 @@ public class Dog_Rotweiler : DogBase
 {
     public override void Bark(DogPack dogPack, DogPack target)
     {
-        target.SetFaith(-barkStrength);
+        float x = target.GetFaith() / 10; 
+        target.SetFaith(-(barkStrength + x));
     }
 }

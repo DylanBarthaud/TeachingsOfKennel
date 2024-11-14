@@ -1,3 +1,4 @@
+using System; 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class PacksManager : MonoBehaviour
     // Spawns the amount of packs specified
     // At location given
     private int numOfPacks = 0; 
-    public void SpawnPack(GameObject pack, int amount, int[] amountOfDogs, Vector3 startLocation){
+    public void SpawnPack(GameObject pack, int amount, int[] amountOfDogs, int[] dogIds, Vector3 startLocation){
         List<Vector3> targetSpawnPositions = utilities.GetPosListAround(startLocation, 1, amount);
         GameObject[] packObjs = spawner.SpawnGameObject(pack, amount, targetSpawnPositions, transform.rotation);
 
@@ -24,7 +25,7 @@ public class PacksManager : MonoBehaviour
         foreach (GameObject packObj in packObjs){
             DogPack currentPack = packObj.GetComponent<DogPack>();
             currentPack.SetId(numOfPacks);
-            SpawnDogs(amountOfDogs[i], currentPack); 
+            SpawnDogs(amountOfDogs[i], currentPack, dogIds); 
             numOfPacks++;
             i++; 
         }
@@ -32,12 +33,25 @@ public class PacksManager : MonoBehaviour
 
     // Spawns amount of dogs in a pack
     // Adds dogs to packs list 
-    private void SpawnDogs(int amount, DogPack pack){
+    private void SpawnDogs(int amount, DogPack pack, int[] ids){
         Vector2 pos = new Vector3(pack.transform.position.x, pack.transform.position.y);
 
-        for (int i = 0; i < amount; i++){    
-            GameObject dogObj = Instantiate(dogList.GetRandomDog(), pos, pack.transform.rotation);
-            pack.AddDog(dogObj.GetComponent<DogBase>());
+        for (int i = 0; i < amount; i++){
+            if (ids[0] == 0) {
+                GameObject dogObj = Instantiate(dogList.GetRandomDog(), pos, pack.transform.rotation);
+                pack.AddDog(dogObj.GetComponent<DogBase>());
+            }
+            else{
+                if (Array.IndexOf(ids, i) < amount){
+                    print("Here");
+                    GameObject dogObj = Instantiate(dogList.GetDog(ids[i]), pos, pack.transform.rotation);
+                    pack.AddDog(dogObj.GetComponent<DogBase>());
+                }
+                else { 
+                    GameObject dogObj = Instantiate(dogList.GetRandomDog(), pos, pack.transform.rotation); 
+                    pack.AddDog(dogObj.GetComponent<DogBase>()); 
+                }
+            }
         }
     }
 
