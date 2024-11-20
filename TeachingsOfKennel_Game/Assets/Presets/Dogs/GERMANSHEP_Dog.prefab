@@ -49,7 +49,7 @@ MonoBehaviour:
   dogName: German Shepard
   description: 'When a German Shepard barks it give an additional 5 bark strength,
     5 faith and 0.5 bark speed to the next dog. '
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 21300000, guid: fc1f2d67046035e4b867ed550e7c4f3c, type: 3}
   baseDogFaith: 15
   baseDogSpeed: 1.1
   baseBarkStrength: 10

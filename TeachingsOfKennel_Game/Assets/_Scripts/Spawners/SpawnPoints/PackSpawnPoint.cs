@@ -20,7 +20,6 @@ public class PackSpawnPoint : MonoBehaviour
 
         if (currentCD <= 0 && MaxAmountOfSpawns > 0)
         {
-            print("Spawn");
             SpawnPacks(); 
             currentCD = coolDown;
             MaxAmountOfSpawns--; 

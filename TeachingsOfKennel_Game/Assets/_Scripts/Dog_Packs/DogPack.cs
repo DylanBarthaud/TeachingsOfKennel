@@ -23,6 +23,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     protected float packSpeed = 1;
     protected int packId;
 
+    protected Vector2 startPos;
     protected Vector3 flagPos;
 
     private State state;
@@ -142,9 +143,14 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         }
 
         for (int i = 0; i < tempDogList.Count; i++){
-            RemoveDog(tempDogList[i]); 
-            newPack.AddDog(tempDogList[i]);
+            ConvertDog(tempDogList[i], newPack);
         }
+    }
+
+    public void ConvertDog(DogBase dog, DogPack newPack){
+        RemoveDog(dog);
+        newPack.AddDog(dog);
+
     }
 
     private IEnumerator FightCoolDown(){
@@ -259,5 +265,9 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 
     public void SetState(State newState){
         state = newState;
+    }
+
+    public void SetStartPos(Vector2 pos){
+        startPos = pos;
     }
 }

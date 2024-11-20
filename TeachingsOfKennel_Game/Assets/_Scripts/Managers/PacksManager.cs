@@ -25,6 +25,7 @@ public class PacksManager : MonoBehaviour
         foreach (GameObject packObj in packObjs){
             DogPack currentPack = packObj.GetComponent<DogPack>();
             currentPack.SetId(numOfPacks);
+            currentPack.SetStartPos(startLocation); 
             SpawnDogs(amountOfDogs[i], currentPack, dogIds); 
             numOfPacks++;
             i++; 
@@ -38,17 +39,17 @@ public class PacksManager : MonoBehaviour
 
         for (int i = 0; i < amount; i++){
             if (ids[0] == 0) {
-                GameObject dogObj = Instantiate(dogList.GetRandomDog(), pos, pack.transform.rotation);
+                GameObject dogObj = Instantiate(dogList.GetRandomDog(0, dogList.GetListLength() - 1), pos, pack.transform.rotation);
                 pack.AddDog(dogObj.GetComponent<DogBase>());
             }
             else{
-                if (Array.IndexOf(ids, i) < amount){
+                if (Array.IndexOf(ids, i) <= amount){
                     print("Here");
                     GameObject dogObj = Instantiate(dogList.GetDog(ids[i]), pos, pack.transform.rotation);
                     pack.AddDog(dogObj.GetComponent<DogBase>());
                 }
                 else { 
-                    GameObject dogObj = Instantiate(dogList.GetRandomDog(), pos, pack.transform.rotation); 
+                    GameObject dogObj = Instantiate(dogList.GetRandomDog(0, dogList.GetListLength() - 1), pos, pack.transform.rotation); 
                     pack.AddDog(dogObj.GetComponent<DogBase>()); 
                 }
             }

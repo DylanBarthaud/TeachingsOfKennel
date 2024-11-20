@@ -36,7 +36,7 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
             eventParent = this,
             transformParent = null
         };
-
+ 
         dogData = new DogDataStruct()
         {
             icon = sprite,

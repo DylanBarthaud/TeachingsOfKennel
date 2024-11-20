@@ -10,7 +10,7 @@ public class Utilities
         return new Vector2(0 + Random.Range(range.x, range.y), 0 + Random.Range(range.x, range.y));
     }
 
-    public Vector2 GetNewPos(Vector2 range, Vector2 exclusionZone, Vector2 startPos)
+    public Vector2 GetNewPos(Vector2 range, Vector2 startPos)
     {
         return new Vector2(startPos.x + Random.Range(range.x, range.y), startPos.y + Random.Range(range.x, range.y));
     }

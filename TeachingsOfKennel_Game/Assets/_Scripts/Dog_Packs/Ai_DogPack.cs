@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ai_DogPack : DogPack
 {
-    private Vector2 range = new Vector2(-5, 5); 
+    private Vector2 range = new Vector2(-5, 5);
 
     private float timeSinceMoved = 0; 
 
@@ -25,7 +25,7 @@ public class Ai_DogPack : DogPack
 
         if(timeSinceMoved <= 0)
         {
-            MoveFlag(utilities.GetNewPos(range)); 
+            MoveFlag(utilities.GetNewPos(range, startPos)); 
             timeSinceMoved = 1;
         }
         timeSinceMoved -= Time.deltaTime;

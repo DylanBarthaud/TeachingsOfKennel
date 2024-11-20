@@ -18,8 +18,12 @@ public class DogList : MonoBehaviour
         return null;
     }
 
-    public GameObject GetRandomDog(){
-        int r = Random.Range(0, list.Count);
+    public GameObject GetRandomDog(int minId, int maxId){
+        int r = Random.Range(minId, maxId);
         return list[r];
+    }
+
+    public int GetListLength(){
+        return list.Count; 
     }
 }
