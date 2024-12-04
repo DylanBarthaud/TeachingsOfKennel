@@ -10,7 +10,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Walls
   - Water
   - UI
   - GroundUI
@@ -45,6 +45,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Dogs
+    uniqueID: 2398362259
     locked: 0
   - name: 'UI '
     uniqueID: 3171799213

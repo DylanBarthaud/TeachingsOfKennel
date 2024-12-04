@@ -8,16 +8,18 @@ public class Game_Engine : MonoBehaviour
 
     public static Game_Engine instance;
 
-    [SerializeField] UiManager uiManager;
     [SerializeField] PacksManager packsManager;
-    
-    private void Awake(){
-        if(instance == null){
+    [SerializeField] UiManager uiManager;
+
+    private void Awake() {
+        if (instance == null) {
             instance = this;
         }
 
         GlobalEventSystem eventSystem = GlobalEventSystem.instance;
 
-        packsManager.SpawnPack(packsManager.playerPackTemplate, 1, new int[] { 1 }, new int[] { 5 }, new Vector3(0, 0, 0)); 
+        int[] amountOfDogs = new int[] { 1 };
+        int[] dogIds = new int[] { 4 }; 
+        packsManager.SpawnPack(packsManager.playerPackTemplate, 1, amountOfDogs, dogIds, new Vector3(0, 0, 0)); 
     }
 }

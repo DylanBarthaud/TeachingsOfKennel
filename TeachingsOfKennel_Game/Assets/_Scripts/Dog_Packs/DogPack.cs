@@ -23,8 +23,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     protected float packSpeed = 1;
     protected int packId;
 
-    protected Vector2 startPos;
-    protected Vector3 flagPos;
+    protected Vector2 flagPos;
 
     private State state;
 
@@ -45,13 +44,18 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     // For adding/removing dogs to/from pack
     public void AddDog(DogBase dog){
         dog.SetId(packId);
+        if(packId == 0){
+            dog.SetScale(new Vector3(1, 1, 1)); 
+        }
 
         activeDogs.Add(dog);
         if (activeDogs.Count > 15){
            DeactivateDog(dog);
         }
 
-        SetMaxFaith(); 
+        if(state != State.fight) {
+            SetMaxFaith();
+        }
     }
 
     private void RemoveDog(DogBase dog){ 
@@ -60,7 +64,10 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         if (activeDogs.Count <= 0){ 
             Destroy(gameObject);
         }
-        SetMaxFaith();
+
+        if (state != State.fight){
+            SetMaxFaith();
+        };
     }
 
     public void ActivateDog(DogBase dog){
@@ -84,6 +91,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         list[dog2] = list[dog1];
         list[dog1] = temp;
     }
+
     // Battle functionality               
     //
     // "TickBarks"
@@ -136,7 +144,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         List<DogBase> tempDogList = new List<DogBase>();
 
         foreach (DogBase dog in activeDogs){
-            int x = Random.Range(1, 21);
+            int x = Random.Range(1, 101);
             if(x >= dog.GetBaseFaith() || activeDogs.Count <= 1){
                 tempDogList.Add(dog);
             }
@@ -164,17 +172,32 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     // "MoveFlag" sets target position for pack
     // "MoveAllDogs" passes positions around target position for dogs to move towards
     protected void MoveFlag(Vector2 newFlagPos) {
-        if (state == State.fight) {
-            flagPos =  transform.position;
+        flagPos = transform.position;
+
+        if (state != State.fight) {
+            int layerMask = LayerMask.GetMask("Walls");
+            Vector2 direction = (newFlagPos - flagPos).normalized;
+
+            RaycastHit2D hit = Physics2D.Raycast(
+                flagPos,
+                direction,
+                Vector2.Distance(flagPos, newFlagPos),
+                layerMask
+            );
+
+            flagPos = hit.collider != null 
+                ? hit.point - direction * 0.5f 
+                : newFlagPos;
         }
-        else{
-            flagPos = newFlagPos;
-        }
+
         MoveAllDogs(); 
     }
 
     public void MoveAllDogs(){
-        List<Vector3> targetPositions = utilities.GetPosListAround(flagPos, new float[] { 0.25f, 0.5f, 0.75f, 1f }, new int[] { 5, 10, 15, activeDogs.Count - 31 });
+        List<Vector3> targetPositions = utilities.GetPosListAround(flagPos, 
+            new float[] { 0.3f, 0.6f, 0.9f, 1.2f },
+            new int[] { 5, 10, 15, activeDogs.Count - 31 }
+            );
 
         int targetPositionIndex = 0;
         foreach (DogBase dogBase in activeDogs){
@@ -265,9 +288,5 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 
     public void SetState(State newState){
         state = newState;
-    }
-
-    public void SetStartPos(Vector2 pos){
-        startPos = pos;
     }
 }

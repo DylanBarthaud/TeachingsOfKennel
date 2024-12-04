@@ -10,6 +10,7 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
     [TextArea]
     [SerializeField] protected string description;
     [SerializeField] protected Sprite sprite;
+    [SerializeField] private Animator animator; 
     [Header("Stats:")]
     [SerializeField] private float baseDogFaith; 
     [SerializeField] private float baseDogSpeed;
@@ -28,6 +29,9 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
     private DogDataStruct dogData;
 
     Vector2 movePos;
+    Vector3 scale;
+    private SpriteRenderer spriteRenderer; 
+    bool isFlipped; 
 
     private void Awake() {
         buttonData = new ButtonDataStruct() {
@@ -49,13 +53,35 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
 
         ResetStatsToBase();
 
+        spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>(); 
         uiManager = UiManager.instance; 
         movePos = transform.position;
+        scale = transform.localScale; 
     }
 
     private void Update(){
         Vector2 newMovePos = new Vector2(movePos.x, movePos.y);
         transform.position = Vector2.MoveTowards(transform.position, newMovePos, dogSpeed * Time.deltaTime);
+
+        if(isFlipped && transform.position.x < newMovePos.x){
+            transform.localScale = scale;
+            isFlipped = false;
+        }
+        else if (!isFlipped && transform.position.x > newMovePos.x){
+            transform.localScale = new Vector3(-scale.x, scale.y, scale.z);
+            isFlipped = true;
+        }
+
+        spriteRenderer.sortingOrder = Mathf.RoundToInt(-((transform.position.y + (transform.position.x / 10)) * 100)); 
+
+        if (animator == null){
+            return; 
+        }
+
+        if(new Vector2(transform.position.x, transform.position.y) == newMovePos){
+            animator.SetBool("IsMoving", false);
+        }
+        else { animator.SetBool("IsMoving", true); }
     }
 
     public void MoveDogGraphic(Vector2 movePos){
@@ -63,11 +89,19 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
     }
 
     public IEnumerator StartBark(DogPack dogPack, DogPack target){
+        if (animator != null){
+            animator.SetBool("IsBarking", true); 
+        }
+
         yield return new WaitForSeconds(barkSpeed);
         if (dogPack.GetFaith() > 0){
             Bark(dogPack, target);
         }
         dogPack.TickBarks(target);
+
+        if (animator != null){
+            animator.SetBool("IsBarking", false);
+        }
     }
     // Abstract functions
     public abstract void Bark(DogPack dogPack, DogPack target);
@@ -150,6 +184,11 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         dogSpeed = baseDogSpeed;
         barkStrength = baseBarkStrength;
         barkSpeed = baseBarkSpeed;
+    }
+
+    public void SetScale(Vector3 scale){
+        this.scale = scale;
+        transform.localScale = scale; 
     }
 }
 

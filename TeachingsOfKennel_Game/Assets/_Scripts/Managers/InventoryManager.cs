@@ -77,17 +77,14 @@ public class InventoryManager : MonoBehaviour, ISpawnsButtons
 
     private void SwapSlots(GameObject slot) {
         DogHolder selectedHolder;
-        if (selectedSlot.GetComponent<DogHolder>() != null){
-            selectedHolder = selectedSlot.GetComponent<DogHolder>();
-        }
-        else{ selectedHolder = selectedSlot.transform.GetChild(1).GetComponent<DogHolder>(); }
+        selectedHolder = selectedSlot.GetComponent<DogHolder>() != null 
+            ? selectedSlot.GetComponent<DogHolder>()
+            : selectedSlot.transform.GetChild(1).GetComponent<DogHolder>();
 
         DogHolder slotHolder;
-        if (slot.GetComponent<DogHolder>() != null)
-        {
-            slotHolder = slot.GetComponent<DogHolder>();
-        }
-        else { slotHolder = slot.transform.GetChild(1).GetComponent<DogHolder>(); }
+        slotHolder = slot.GetComponent<DogHolder>() != null 
+            ? slotHolder = slot.GetComponent<DogHolder>()
+            : slot.transform.GetChild(1).GetComponent<DogHolder>();
 
         if (selectedHolder.GetState() == ActiveState.active && slotHolder.GetState() == ActiveState.active){
             playerPack.SwapDogs(selectedHolder.GetIndex(), slotHolder.GetIndex(), playerPack.GetActiveDogs());
