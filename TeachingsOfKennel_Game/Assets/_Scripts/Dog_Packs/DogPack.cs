@@ -38,7 +38,6 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         uiManager = UiManager.instance;
         uiManager.SpawnButtons(new List<ButtonDataStruct>() { buttonData }, 0, 1, uiManager.packButtonContainer.transform);
         state = State.freeRoam;
-        SetMaxFaith();
     }
 
     // For adding/removing dogs to/from pack
@@ -50,10 +49,10 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 
         activeDogs.Add(dog);
         if (activeDogs.Count > 15){
-           DeactivateDog(dog);
+           DeactivateDog(15);
         }
 
-        if(state != State.fight) {
+        if (activeDogs.Count < 2){
             SetMaxFaith();
         }
     }
@@ -64,25 +63,21 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         if (activeDogs.Count <= 0){ 
             Destroy(gameObject);
         }
-
-        if (state != State.fight){
-            SetMaxFaith();
-        };
     }
 
-    public void ActivateDog(DogBase dog){
-        storedDogs.Remove(dog);
-        activeDogs.Add(dog);
-        dog.gameObject.SetActive(true);
-        dog.transform.position = new Vector2(transform.position.x + 5, transform.position.y); 
+    public void ActivateDog(int dogIndex){
+        activeDogs.Add(storedDogs[dogIndex]);
+        storedDogs[dogIndex].gameObject.SetActive(true);
+        storedDogs[dogIndex].transform.position = new Vector2(transform.position.x + 5, transform.position.y);
+        storedDogs.RemoveAt(dogIndex);
         MoveAllDogs();
         SetMaxFaith();
     }
 
-    public void DeactivateDog(DogBase dog){
-        activeDogs.Remove(dog);
-        storedDogs.Add(dog);
-        dog.gameObject.SetActive(false);
+    public void DeactivateDog(int dogIndex){
+        storedDogs.Add(activeDogs[dogIndex]);
+        activeDogs[dogIndex].gameObject.SetActive(false);
+        activeDogs.RemoveAt(dogIndex);
         SetMaxFaith();
     }
 
@@ -90,6 +85,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         DogBase temp = list[dog2];
         list[dog2] = list[dog1];
         list[dog1] = temp;
+        SetMaxFaith();
     }
 
     // Battle functionality               
@@ -115,12 +111,14 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
             ConvertRandom(target);
             StartCoroutine(FightCoolDown());
             ResetDogStats();
+            if (activeDogs.Count > 0) {SetMaxFaith();}
             tickCounter = 0;
         }
 
         else if (target.GetFaith() <= 0){
             StartCoroutine(FightCoolDown());
             ResetDogStats();
+            if (activeDogs.Count > 0){SetMaxFaith();}
             tickCounter = 0;
         }
 
@@ -144,7 +142,7 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
         List<DogBase> tempDogList = new List<DogBase>();
 
         foreach (DogBase dog in activeDogs){
-            int x = Random.Range(1, 101);
+            int x = 10000; 
             if(x >= dog.GetBaseFaith() || activeDogs.Count <= 1){
                 tempDogList.Add(dog);
             }
@@ -162,7 +160,6 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     }
 
     private IEnumerator FightCoolDown(){
-        SetMaxFaith();
         SetState(State.cooldown);
         yield return new WaitForSeconds(5); 
         SetState(State.freeRoam);
@@ -254,16 +251,12 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     //Setters
     public void SetFaith(float x){
         packFaith += x;
+        uiManager.SpawnDmgPopUp(transform.position, x); 
         faithSlider.value = packFaith;
     }
 
     public void SetMaxFaith(){
-        float x = 0;
-        foreach (DogBase dog in activeDogs){
-            x += dog.GetBaseFaith();
-        }
-
-        packFaith = x;
+        packFaith = activeDogs[0].GetBaseFaith();
         faithSlider.maxValue = packFaith;
         faithSlider.value = packFaith;
     }

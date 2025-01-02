@@ -9,6 +9,8 @@ public class InventoryManager : MonoBehaviour, ISpawnsButtons
 
     [SerializeField] private GameObject[] activeSlots = new GameObject[15];
     [SerializeField] private GameObject content;
+    [SerializeField] private Transform activeSlotContainer;
+    [SerializeField] private Sprite emptySlotSprite; 
 
     private GameObject selectedSlot; 
     private DogPack playerPack;
@@ -23,24 +25,34 @@ public class InventoryManager : MonoBehaviour, ISpawnsButtons
         List<DogBase> activeDogs = playerPack.GetActiveDogs();
         List<DogBase> storedDogs = playerPack.GetStoredDogs();
 
-        for(int i = 0; i < activeDogs.Count; i++){
-            int index = i; 
-            Transform slot = activeSlots[index].transform.GetChild(1);
-            slot.GetComponent<Image>().sprite = activeDogs[index].GetSprite();
+        for(int i = 0; i < activeSlots.Length; i++){
+            int index = i;
+            Transform slot = activeSlots[index].transform.GetChild(0);
 
             Button slotSelected = slot.GetComponent<Button>();
-            Button infoButton = activeSlots[index].transform.GetChild(0).GetComponent<Button>();
+            Button infoButton = activeSlots[index].transform.GetChild(1).GetComponent<Button>();
+            Button storeDogButton = activeSlots[index].transform.GetChild(2).GetComponent<Button>();
 
             infoButton.onClick.RemoveAllListeners();
             slotSelected.onClick.RemoveAllListeners();
+            storeDogButton.onClick.RemoveAllListeners();
 
-            infoButton.onClick.AddListener(() => activeDogs[index].OnButtonClick(activeSlots[index]));
-            slotSelected.onClick.AddListener(() => SelectSlot(activeSlots[index]));
+            if (i < activeDogs.Count) {
+                slot.GetComponent<Image>().sprite = activeDogs[index].GetSprite();
 
-            DogHolder dogHolder = activeSlots[index].transform.GetChild(1).GetComponent<DogHolder>();
-            dogHolder.SetDog(activeDogs[index]);
-            dogHolder.SetIndex(index);
-            dogHolder.SetState(ActiveState.active);
+                infoButton.onClick.AddListener(() => activeDogs[index].OnButtonClick(activeSlots[index]));
+                slotSelected.onClick.AddListener(() => SelectSlot(activeSlots[index]));
+                storeDogButton.onClick.AddListener(() => StoreDog(index));
+
+                DogHolder dogHolder = slot.GetComponent<DogHolder>();
+                dogHolder.SetDog(activeDogs[index]);
+                dogHolder.SetIndex(index);
+                dogHolder.SetState(ActiveState.active);
+            }
+
+            else{
+                slot.GetComponent<Image>().sprite = emptySlotSprite;
+            }
         }
 
         List<ButtonDataStruct> dogButtons = new List<ButtonDataStruct>();
@@ -58,7 +70,6 @@ public class InventoryManager : MonoBehaviour, ISpawnsButtons
 
         for (int i = 0; i < buttons.Length; i++){
             DogHolder dogHolder = buttons[i].GetComponent<DogHolder>(); 
-            dogHolder.SetDog(storedDogs[i]);
             dogHolder.SetIndex(i);
             dogHolder.SetState(ActiveState.stored);
         }
@@ -69,42 +80,45 @@ public class InventoryManager : MonoBehaviour, ISpawnsButtons
     }
 
     private void SelectSlot(GameObject slot){
-        if (selectedSlot != null) {  
-            SwapSlots(slot);
+        DogHolder slotInfo_1;
+        slotInfo_1 = slot.GetComponent<DogHolder>() != null
+            ? slotInfo_1 = slot.GetComponent<DogHolder>()
+            : slot.transform.GetChild(0).GetComponent<DogHolder>();
+
+        if (slotInfo_1.GetState() == ActiveState.stored) {  
+            if(playerPack.GetActiveDogs().Count == 15){
+                return; 
+            }
+            playerPack.ActivateDog(slotInfo_1.GetIndex());
+            RefreshInventory();
         }
-        else { selectedSlot = slot; print("Selected button"); }
+
+        else{
+            if (selectedSlot != null){
+                SwapSlots(slotInfo_1);
+            }
+            else { selectedSlot = slot; print("Selected button"); }
+        }
     }
 
-    private void SwapSlots(GameObject slot) {
-        DogHolder selectedHolder;
-        selectedHolder = selectedSlot.GetComponent<DogHolder>() != null 
+    private void SwapSlots(DogHolder slotInfo_1) {
+        DogHolder slotInfo_2;
+        slotInfo_2 = selectedSlot.GetComponent<DogHolder>() != null 
             ? selectedSlot.GetComponent<DogHolder>()
-            : selectedSlot.transform.GetChild(1).GetComponent<DogHolder>();
+            : selectedSlot.transform.GetChild(0).GetComponent<DogHolder>();
 
-        DogHolder slotHolder;
-        slotHolder = slot.GetComponent<DogHolder>() != null 
-            ? slotHolder = slot.GetComponent<DogHolder>()
-            : slot.transform.GetChild(1).GetComponent<DogHolder>();
-
-        if (selectedHolder.GetState() == ActiveState.active && slotHolder.GetState() == ActiveState.active){
-            playerPack.SwapDogs(selectedHolder.GetIndex(), slotHolder.GetIndex(), playerPack.GetActiveDogs());
-            playerPack.MoveAllDogs(); 
-        }
-        else if (selectedHolder.GetState() == ActiveState.stored && slotHolder.GetState() == ActiveState.stored){
-            playerPack.SwapDogs(selectedHolder.GetIndex(), slotHolder.GetIndex(), playerPack.GetStoredDogs());
-            playerPack.MoveAllDogs();
-        }
-        else if (selectedHolder.GetState() == ActiveState.stored && slotHolder.GetState() == ActiveState.active){
-            playerPack.DeactivateDog(slotHolder.GetDog());
-            playerPack.ActivateDog(selectedHolder.GetDog()); 
-        }
-        else{
-            playerPack.DeactivateDog(selectedHolder.GetDog());
-            playerPack.ActivateDog(slotHolder.GetDog());
-        }
+        playerPack.SwapDogs(slotInfo_2.GetIndex(), slotInfo_1.GetIndex(), playerPack.GetActiveDogs());
+        playerPack.MoveAllDogs();
 
         selectedSlot = null; 
         RefreshInventory();
+    }
+
+    private void StoreDog(int index) {
+        if (index >= 0 && index < playerPack.GetActiveDogs().Count && playerPack.GetActiveDogs().Count > 2){
+            playerPack.DeactivateDog(index);
+            RefreshInventory();
+        } 
     }
 }
  

@@ -14,14 +14,16 @@ public class Dog_Chihuahua : DogBase
         else { nextDog = dogs[0]; }
 
         if (nextDog.GetBreedId() == 2){
-            nextDog.SetBarkSpeed(GetBaseBarkSpeed() / 2); 
+            nextDog.SetBarkSpeed(GetBarkSpeed() / 2); 
         }
         else{
-            float x = nextDog.GetBaseBarkSpeed() - GetBaseBarkSpeed();
+            float x = nextDog.GetBarkSpeed() - GetBarkSpeed();
             if (x < 0) { x = 0;}
             nextDog.AddToBarkSpeed(x / 2); 
         }
 
-        target.SetFaith(-barkStrength);
+        if (target != null) {
+            target.SetFaith(-barkStrength);
+        }
     }
 }

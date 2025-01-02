@@ -18,8 +18,8 @@ public class Game_Engine : MonoBehaviour
 
         GlobalEventSystem eventSystem = GlobalEventSystem.instance;
 
-        int[] amountOfDogs = new int[] { 1 };
-        int[] dogIds = new int[] { 4 }; 
+        int[] amountOfDogs = new int[] { 15 };
+        int[] dogIds = new int[] { 2 }; 
         packsManager.SpawnPack(packsManager.playerPackTemplate, 1, amountOfDogs, dogIds, new Vector3(0, 0, 0)); 
     }
 }

@@ -15,7 +15,9 @@ public class UiManager : MonoBehaviour
     [SerializeField] public GameObject statContainer; 
     [SerializeField] public GameObject packViewer;
     [SerializeField] public GameObject dogStats;
-    [SerializeField] public GameObject packButtonContainer; 
+    [SerializeField] public GameObject packButtonContainer;
+
+    [SerializeField] private GameObject[] popUps; 
 
     public static UiManager instance;
     private void Awake()
@@ -88,5 +90,13 @@ public class UiManager : MonoBehaviour
         dogstatTransform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Faith: " + dogData.faith;
         dogstatTransform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "Bark Strength: " + dogData.barkStrength;
         dogstatTransform.GetChild(5).GetComponent<TextMeshProUGUI>().text = "Bark Speed: " + dogData.barkSpeed;
+    }
+
+    //PopUps
+    public void SpawnDmgPopUp(Vector2 spawnPos, float dmgAmount){
+        Transform dmgPopUpTransform = Instantiate(popUps[0], spawnPos, Quaternion.identity).transform;
+        DmgPopUp dmgPopUp = dmgPopUpTransform.GetComponent<DmgPopUp>();
+
+        dmgPopUp.SetUp(dmgAmount);
     }
 }

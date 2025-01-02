@@ -89,19 +89,23 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
     }
 
     public IEnumerator StartBark(DogPack dogPack, DogPack target){
-        if (animator != null){
-            animator.SetBool("IsBarking", true); 
-        }
-
         yield return new WaitForSeconds(barkSpeed);
+
         if (dogPack.GetFaith() > 0){
             Bark(dogPack, target);
+
+            if (animator != null)
+            {
+                animator.SetBool("IsBarking", true);
+                yield return new WaitForSeconds(0.05f);
+                animator.SetBool("IsBarking", false);
+            }
+
+            AudioSource audioSource = transform.GetComponent<AudioSource>();
+            audioSource.Play();
+
         }
         dogPack.TickBarks(target);
-
-        if (animator != null){
-            animator.SetBool("IsBarking", false);
-        }
     }
     // Abstract functions
     public abstract void Bark(DogPack dogPack, DogPack target);
@@ -129,6 +133,10 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         return baseBarkSpeed; 
     }
 
+    public float GetBarkSpeed(){
+        return barkSpeed;
+    }
+
     public int GetBreedId(){
         return breedId; 
     }
@@ -150,13 +158,8 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         packId = id;
     }
 
-    public void SetBarkSpeed(float x)
-    {
-        if (x > 0.1f)
-        {
-            barkSpeed = x;
-        }
-        else { barkSpeed = 0.1f; }
+    public void SetBarkSpeed(float x){
+        barkSpeed = x; 
     }
 
     public void AddToBarkSpeed(float x){
