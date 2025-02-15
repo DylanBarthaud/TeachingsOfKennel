@@ -10,4 +10,5 @@ public struct DogDataStruct
     public float faith;
     public float barkStrength;
     public float barkSpeed;
+    public float dogSpeed;
 }

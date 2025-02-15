@@ -10,7 +10,7 @@ public class PacksManager : MonoBehaviour
 
     private Utilities utilities = new Utilities();
     [SerializeField] SpawnGameObjects spawner;
-    [SerializeField] private DogList dogList;
+    [SerializeField] private List dogList;
     [SerializeField] public GameObject playerPackTemplate;
     [SerializeField] public GameObject enemyPackTemplate;
 
@@ -49,8 +49,8 @@ public class PacksManager : MonoBehaviour
             }
 
             GameObject dogObj = ids[0] == 0
-                ? Instantiate(dogList.GetRandomDog(0, dogList.GetListLength() - 1), pos, pack.transform.rotation)
-                : Instantiate(dogList.GetDog(ids[index]), pos, pack.transform.rotation);
+                ? Instantiate(dogList.ReturnRandomItem(0, dogList.ReturnListLength() - 1), pos, pack.transform.rotation)
+                : Instantiate(dogList.ReturnItem(ids[index]), pos, pack.transform.rotation);
 
             pack.AddDog(dogObj.GetComponent<DogBase>());
             index++;

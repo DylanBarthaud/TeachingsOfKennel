@@ -16,6 +16,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] public GameObject packViewer;
     [SerializeField] public GameObject dogStats;
     [SerializeField] public GameObject packButtonContainer;
+    [SerializeField] public GameObject itemWindow;
 
     [SerializeField] private GameObject[] popUps; 
 
@@ -79,6 +80,37 @@ public class UiManager : MonoBehaviour
     }
     public void DeactivateWindow(GameObject window){  
         window.SetActive(false);
+    }
+
+    //Item Ineventory
+    public void InvButtonFlip(){
+        if (itemWindow.activeInHierarchy){
+            itemWindow.SetActive(false);
+        }
+
+        else {SetUpItemWindow();}
+    }
+
+    public void SetUpItemWindow(){
+        Player_DogPack player = Game_Engine.instance.GetPlayerPack();
+        List<ItemBase> items = player.getItems();
+        List<ButtonDataStruct> buttonStructs = new List<ButtonDataStruct>();
+
+        for (int i = 0; i < items.Count; i++) {
+            ButtonDataStruct itemStats = items[i].GetButtonData();
+            ButtonDataStruct newData = new ButtonDataStruct {
+                eventParent = itemStats.eventParent,
+                text = itemStats.text,
+                sprite = itemStats.sprite,
+                transformParent = null
+            };
+
+            buttonStructs.Add(newData);
+        }
+
+        ClearContainer(itemWindow.transform.GetChild(0)); 
+        ActivateWindow(itemWindow);
+        SpawnButtons(buttonStructs, 1, items.Count, itemWindow.transform.GetChild(0));
     }
 
     // Handles the dog stat window

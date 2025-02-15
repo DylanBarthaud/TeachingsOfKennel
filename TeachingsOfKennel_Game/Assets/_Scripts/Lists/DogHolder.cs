@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActiveState { stored, active };
-
 public class DogHolder : MonoBehaviour
 {
     private DogBase dog;

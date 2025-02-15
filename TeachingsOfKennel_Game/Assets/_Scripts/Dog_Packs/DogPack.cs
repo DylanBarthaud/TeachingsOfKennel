@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum State { freeRoam, fight, cooldown }
 public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 {
     // This class handles an individual dog pack
@@ -198,15 +197,14 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 
         int targetPositionIndex = 0;
         foreach (DogBase dogBase in activeDogs){
-            dogBase.MoveDogGraphic(targetPositions[targetPositionIndex]);
+            dogBase.MoveDog(targetPositions[targetPositionIndex]);
             targetPositionIndex++;
         }
     }
 
     // When pack is clicked on 
     // Spawn buttons pertaining to each dog in list
-    public void OnButtonClick(GameObject buttonObj)
-    {
+    public void OnButtonClick(GameObject buttonObj){
         List<ButtonDataStruct> dogButtons = new List<ButtonDataStruct>();
         for (int i = 0; i < activeDogs.Count; i++){
             dogButtons.Add(activeDogs[i].GetButtonData());
@@ -251,6 +249,9 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
     //Setters
     public void SetFaith(float x){
         packFaith += x;
+        if (packFaith > activeDogs[0].GetFaith()){
+            packFaith = activeDogs[0].GetFaith();
+        }
         uiManager.SpawnDmgPopUp(transform.position, x); 
         faithSlider.value = packFaith;
     }
@@ -281,5 +282,33 @@ public class DogPack : MonoBehaviour, IHasId, ISpawnsButtons
 
     public void SetState(State newState){
         state = newState;
+    }
+
+    public void ChangeDogsStatsTemp(int[] dogIndex, StatType[] statTypes, DogDataStruct additionalStats){
+        additionalStats.icon = null;
+        additionalStats.description = null;
+
+        for (int i = 0; i < dogIndex.Length; i++) {
+            for (int j = 0; j < statTypes.Length; j++) {
+                DogBase dog = activeDogs[dogIndex[i]]; 
+                switch (statTypes[j]){
+                    case StatType.health:
+                        dog.AddToFaith(additionalStats.faith); 
+                        break;
+                    case StatType.barkStrength:
+                        dog.AddToBarkStrength(additionalStats.barkStrength);
+                        break;
+                    case StatType.barkSpeed:
+                        dog.AddToBarkSpeed(additionalStats.barkSpeed);
+                        break;
+                    case StatType.dogSpeed:
+                        dog.AddToMoveSpeed(additionalStats.dogSpeed);
+                        break;
+                    default: 
+                        Debug.LogError("Stat not recognised in [DogPack - ChangeDogsStatsTemp] !!! ");
+                        break; 
+                }
+            }
+        }
     }
 }

@@ -84,7 +84,7 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         else { animator.SetBool("IsMoving", true); }
     }
 
-    public void MoveDogGraphic(Vector2 movePos){
+    public void MoveDog(Vector2 movePos){
         this.movePos = movePos;
     }
 
@@ -137,6 +137,10 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
         return barkSpeed;
     }
 
+    public float GetFaith(){
+        return dogFaith; 
+    }
+
     public int GetBreedId(){
         return breedId; 
     }
@@ -180,6 +184,10 @@ public abstract class DogBase : MonoBehaviour, IHasId, ISpawnsButtons
 
     public void AddToFaith(float x){
         dogFaith += x; 
+    }
+
+    public void AddToMoveSpeed(float x) {
+        dogSpeed += x; 
     }
 
     public void ResetStatsToBase(){

@@ -13,12 +13,12 @@ public class InventoryManager : MonoBehaviour, ISpawnsButtons
     [SerializeField] private Sprite emptySlotSprite; 
 
     private GameObject selectedSlot; 
-    private DogPack playerPack;
+    private Player_DogPack playerPack;
     private void Start(){
         uiManager = UiManager.instance;
-        playerPack = GameObject.FindGameObjectWithTag("Player_Pack").GetComponent<DogPack>();
+        playerPack = Game_Engine.instance.GetPlayerPack();
 
-        selectedSlot = null; 
+        selectedSlot = null;  
     }
 
     public void RefreshInventory(){
@@ -37,7 +37,7 @@ public class InventoryManager : MonoBehaviour, ISpawnsButtons
             slotSelected.onClick.RemoveAllListeners();
             storeDogButton.onClick.RemoveAllListeners();
 
-            if (i < activeDogs.Count) {
+            if (index < activeDogs.Count) {
                 slot.GetComponent<Image>().sprite = activeDogs[index].GetSprite();
 
                 infoButton.onClick.AddListener(() => activeDogs[index].OnButtonClick(activeSlots[index]));
@@ -115,7 +115,7 @@ public class InventoryManager : MonoBehaviour, ISpawnsButtons
     }
 
     private void StoreDog(int index) {
-        if (index >= 0 && index < playerPack.GetActiveDogs().Count && playerPack.GetActiveDogs().Count > 2){
+        if (index >= 0 && index < playerPack.GetActiveDogs().Count && playerPack.GetActiveDogs().Count > 1){
             playerPack.DeactivateDog(index);
             RefreshInventory();
         } 
